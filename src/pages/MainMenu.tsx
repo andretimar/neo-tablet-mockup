@@ -1,7 +1,7 @@
 import { Header } from "@/components/Header";
 import { Card } from "@/components/ui/card";
 import { Link } from "react-router-dom";
-import { FileText, Database, Truck, AlertTriangle } from "lucide-react";
+import { FileText, Database, Truck, AlertTriangle, Home } from "lucide-react";
 
 const MenuCard = ({ title, to, icon: Icon, description }: { 
   title: string; 
@@ -20,6 +20,12 @@ const MenuCard = ({ title, to, icon: Icon, description }: {
 
 const MainMenu = () => {
   const menuItems = [
+    {
+      title: "Dashboard",
+      to: "/",
+      icon: Home,
+      description: "Return to main dashboard"
+    },
     {
       title: "Delivery Notes",
       to: "/delivery-notes",
