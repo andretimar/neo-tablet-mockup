@@ -18,16 +18,19 @@ const mockData = {
   ],
 } as const;
 
+type ProcessType = typeof mockData.inProgress[number]["process"];
+type GroupedData = Record<ProcessType, typeof mockData.inProgress>;
+
 const ProcessGrid = () => {
-  const groupData = (items: typeof mockData.inProgress | typeof mockData.waiting) => {
+  const groupData = (items: typeof mockData.inProgress | typeof mockData.waiting): GroupedData => {
     return items.reduce((acc, item) => {
       const process = item.process;
       if (!acc[process]) {
-        acc[process] = [];
+        acc[process] = [] as typeof mockData.inProgress;
       }
-      acc[process].push(item);
+      acc[process] = [...acc[process], item];
       return acc;
-    }, {} as { [K in typeof mockData.inProgress[number]["process"]]: typeof mockData.inProgress });
+    }, {} as GroupedData);
   };
 
   const renderSection = (
@@ -39,8 +42,8 @@ const ProcessGrid = () => {
     return (
       <div className="space-y-3">
         <h2 className="text-2xl font-bold text-gray-800">{title}</h2>
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
-          {(Object.keys(groupedData) as Array<keyof typeof groupedData>).map(
+        <div className="grid grid-cols-5 gap-4">
+          {(Object.keys(groupedData) as ProcessType[]).map(
             (process) => (
               <div key={process} className="space-y-3">
                 {showProcessLabels && (

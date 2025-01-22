@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import Header from "@/components/Header";
+import { FilePlus, QrCode, FileText } from "lucide-react";
 
 const EditItem = () => {
   const { id } = useParams();
@@ -17,14 +18,14 @@ const EditItem = () => {
         {/* Header with process steps */}
         <div className="grid grid-cols-5 gap-4 mb-6">
           {["Disassembly", "Grinding", "Plating", "Heat Treatment", "Assembly"].map((step, index) => (
-            <div
+            <button
               key={step}
-              className={`p-4 border ${
+              className={`p-3 border ${
                 index === 1 ? "bg-blue-600 text-white" : "bg-white"
-              } text-center font-medium rounded-lg`}
+              } text-center font-medium rounded-lg text-sm flex items-center justify-center h-12`}
             >
               {step}
-            </div>
+            </button>
           ))}
         </div>
 
@@ -36,14 +37,27 @@ const EditItem = () => {
               <div className="text-sm text-gray-500">Roll ID</div>
               <div className="text-2xl font-bold text-blue-600">{id}</div>
             </div>
-            <div>
+            <div className="space-y-1">
               <div className="text-sm text-gray-500">Customer</div>
               <div className="text-xl font-semibold">Samsung</div>
             </div>
+            <div className="space-y-1">
+              <div className="text-sm text-gray-500">Due Date</div>
+              <div className="text-xl font-semibold">2025.03.01</div>
+            </div>
             <div className="space-x-4">
-              <Button variant="outline">Attach</Button>
-              <Button variant="outline" className="text-green-600">Generate Q.R.</Button>
-              <Button variant="outline" className="text-red-600">Report</Button>
+              <Button variant="outline">
+                <FilePlus className="mr-2 h-4 w-4" />
+                Attach
+              </Button>
+              <Button variant="outline" className="text-green-600">
+                <QrCode className="mr-2 h-4 w-4" />
+                Generate Q.R.
+              </Button>
+              <Button variant="outline" className="text-red-600">
+                <FileText className="mr-2 h-4 w-4" />
+                Report
+              </Button>
             </div>
           </div>
 

@@ -32,7 +32,7 @@ const ProcessCard = ({ id, process, client, pair, assignee, isPriority, hasProbl
 
   return (
     <div 
-      className={`${getBackgroundColor()} rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden h-[140px] cursor-pointer`}
+      className={`${getBackgroundColor()} rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden h-[140px] cursor-pointer relative`}
       onClick={() => navigate(`/edit/${id}`)}
     >
       <div className="p-3 h-full flex flex-col">
@@ -42,18 +42,18 @@ const ProcessCard = ({ id, process, client, pair, assignee, isPriority, hasProbl
             {process}
           </span>
         </div>
-        <div className="flex flex-col h-full">
-          <div className="space-y-1">
-            <div className="text-sm text-gray-600">
-              Client: <span className="font-medium text-gray-800">{client}</span>
-            </div>
-            {pair && (
-              <div className="text-sm text-gray-600">
-                Pair: <span className="font-medium text-gray-800">{pair}</span>
-              </div>
-            )}
+        <div className="space-y-1">
+          <div className="text-sm text-gray-600">
+            Client: <span className="font-medium text-gray-800">{client}</span>
           </div>
-          <div className="flex items-center mt-auto pt-3 border-t border-gray-100">
+          {pair && (
+            <div className="text-sm text-gray-600">
+              Pair: <span className="font-medium text-gray-800">{pair}</span>
+            </div>
+          )}
+        </div>
+        <div className="absolute bottom-0 left-0 right-0 p-3 bg-white bg-opacity-90">
+          <div className="flex items-center">
             <img
               src={assignee?.image || "/placeholder.svg"}
               alt={assignee?.name || "Unassigned"}
