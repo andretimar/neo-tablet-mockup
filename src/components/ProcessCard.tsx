@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 interface ProcessCardProps {
   id: string;
   process: "Disassembly" | "Grinding" | "Plating" | "Heat Treat" | "Assembly";
@@ -20,6 +22,8 @@ const processColors = {
 };
 
 const ProcessCard = ({ id, process, client, pair, assignee, isPriority, hasProblem }: ProcessCardProps) => {
+  const navigate = useNavigate();
+
   const getBackgroundColor = () => {
     if (isPriority) return "bg-amber-50";
     if (hasProblem) return "bg-red-50";
@@ -27,7 +31,10 @@ const ProcessCard = ({ id, process, client, pair, assignee, isPriority, hasProbl
   };
 
   return (
-    <div className={`${getBackgroundColor()} rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden h-[140px]`}>
+    <div 
+      className={`${getBackgroundColor()} rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden h-[140px] cursor-pointer`}
+      onClick={() => navigate(`/edit/${id}`)}
+    >
       <div className="p-3 h-full flex flex-col">
         <div className="flex items-center justify-between mb-2">
           <span className="text-3xl font-bold text-gray-800">{id}</span>
