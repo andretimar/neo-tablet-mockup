@@ -15,8 +15,8 @@ const processColors = {
 
 const ProcessCard = ({ id, process, client, pair }: ProcessCardProps) => {
   return (
-    <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden">
-      <div className="p-4">
+    <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden h-[140px]">
+      <div className="p-4 h-full flex flex-col">
         <div className="flex items-center justify-between mb-3">
           <span className="text-3xl font-bold text-gray-800">{id}</span>
           <span className={`${processColors[process]} px-3 py-1 rounded-full text-sm font-medium`}>
