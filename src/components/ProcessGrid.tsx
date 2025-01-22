@@ -3,18 +3,18 @@ import { Separator } from "./ui/separator";
 
 const mockData = {
   inProgress: [
-    { id: "87602", process: "Disassembly", client: "Samsung" },
-    { id: "75036", process: "Grinding", client: "Samsung", pair: "75037" },
-    { id: "4065", process: "Plating", client: "SKBM" },
-    { id: "12679", process: "Heat Treat", client: "SKOM", pair: "12680" },
-    { id: "3340", process: "Assembly", client: "Samsung", pair: "3341" },
+    { id: "87602", process: "Disassembly", client: "Samsung", assignee: { name: "John Doe", image: "/placeholder.svg" } },
+    { id: "75036", process: "Grinding", client: "Samsung", pair: "75037", assignee: { name: "Jane Smith", image: "/placeholder.svg" } },
+    { id: "4065", process: "Plating", client: "SKBM", assignee: { name: "Mike Johnson", image: "/placeholder.svg" } },
+    { id: "12679", process: "Heat Treat", client: "SKOM", pair: "12680", assignee: { name: "Sarah Wilson", image: "/placeholder.svg" } },
+    { id: "3340", process: "Assembly", client: "Samsung", pair: "3341", assignee: { name: "Tom Brown", image: "/placeholder.svg" } },
   ],
   waiting: [
-    { id: "87603", process: "Disassembly", client: "LG" },
-    { id: "75038", process: "Grinding", client: "SKBM", pair: "75039" },
-    { id: "4066", process: "Plating", client: "Samsung" },
-    { id: "12681", process: "Heat Treat", client: "LG", pair: "12682" },
-    { id: "3342", process: "Assembly", client: "SKOM", pair: "3343" },
+    { id: "87603", process: "Disassembly", client: "LG", assignee: { name: "Alex Lee", image: "/placeholder.svg" } },
+    { id: "75038", process: "Grinding", client: "SKBM", pair: "75039", assignee: { name: "Emma Davis", image: "/placeholder.svg" } },
+    { id: "4066", process: "Plating", client: "Samsung", assignee: { name: "Chris Park", image: "/placeholder.svg" } },
+    { id: "12681", process: "Heat Treat", client: "LG", pair: "12682", assignee: { name: "Lisa Chen", image: "/placeholder.svg" } },
+    { id: "3342", process: "Assembly", client: "SKOM", pair: "3343", assignee: { name: "David Kim", image: "/placeholder.svg" } },
   ],
 } as const;
 
@@ -32,18 +32,21 @@ const ProcessGrid = () => {
 
   const renderSection = (
     title: string,
-    items: typeof mockData.inProgress | typeof mockData.waiting
+    items: typeof mockData.inProgress | typeof mockData.waiting,
+    showProcessLabels: boolean = true
   ) => {
     const groupedData = groupData(items);
     return (
-      <div className="space-y-8">
+      <div className="space-y-4">
         <h2 className="text-2xl font-bold text-gray-800">{title}</h2>
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
           {(Object.keys(groupedData) as Array<typeof mockData.inProgress[number]["process"]>).map(
             (process) => (
-              <div key={process} className="space-y-4">
-                <h3 className="text-lg font-semibold text-gray-700">{process}</h3>
-                <div className="space-y-4">
+              <div key={process} className="space-y-3">
+                {showProcessLabels && (
+                  <h3 className="text-lg font-semibold text-gray-700">{process}</h3>
+                )}
+                <div className="space-y-3">
                   {groupedData[process].map((item) => (
                     <ProcessCard key={item.id} {...item} />
                   ))}
@@ -57,10 +60,10 @@ const ProcessGrid = () => {
   };
 
   return (
-    <div className="p-6 space-y-8">
-      {renderSection("In Progress", mockData.inProgress)}
-      <Separator className="my-8" />
-      {renderSection("Waiting", mockData.waiting)}
+    <div className="p-4 space-y-6">
+      {renderSection("In Progress", mockData.inProgress, true)}
+      <Separator className="my-6" />
+      {renderSection("Waiting", mockData.waiting, false)}
     </div>
   );
 };
