@@ -15,13 +15,25 @@ const processColors = {
 
 const ProcessCard = ({ id, process, client, pair }: ProcessCardProps) => {
   return (
-    <div className="border-2 border-gray-300 rounded-lg p-4 bg-white">
-      <div className="text-3xl font-bold mb-2">{id}</div>
-      <div className={`${processColors[process]} inline-block px-3 py-1 rounded-md text-black font-medium mb-2`}>
-        {process}
+    <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden">
+      <div className="p-4">
+        <div className="flex items-center justify-between mb-3">
+          <span className="text-3xl font-bold text-gray-800">{id}</span>
+          <span className={`${processColors[process]} px-3 py-1 rounded-full text-sm font-medium`}>
+            {process}
+          </span>
+        </div>
+        <div className="space-y-1">
+          <div className="text-sm text-gray-600">
+            Client: <span className="font-medium text-gray-800">{client}</span>
+          </div>
+          {pair && (
+            <div className="text-sm text-gray-600">
+              Pair: <span className="font-medium text-gray-800">{pair}</span>
+            </div>
+          )}
+        </div>
       </div>
-      {pair && <div className="text-sm mb-1">Pair: {pair}</div>}
-      <div className="text-sm">Client: {client}</div>
     </div>
   );
 };

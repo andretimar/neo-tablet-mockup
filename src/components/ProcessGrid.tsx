@@ -9,12 +9,27 @@ const mockData = [
 ] as const;
 
 const ProcessGrid = () => {
+  const groupedData = mockData.reduce((acc, item) => {
+    if (!acc[item.process]) {
+      acc[item.process] = [];
+    }
+    acc[item.process].push(item);
+    return acc;
+  }, {} as Record<typeof mockData[number]["process"], typeof mockData>);
+
   return (
-    <div className="p-4">
-      <h2 className="text-xl font-semibold mb-4">In Progress</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {mockData.map((item) => (
-          <ProcessCard key={item.id} {...item} />
+    <div className="p-6 space-y-8">
+      <h2 className="text-2xl font-bold text-gray-800">In Progress</h2>
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+        {(Object.keys(groupedData) as Array<typeof mockData[number]["process"]>).map((process) => (
+          <div key={process} className="space-y-4">
+            <h3 className="text-lg font-semibold text-gray-700">{process}</h3>
+            <div className="space-y-4">
+              {groupedData[process].map((item) => (
+                <ProcessCard key={item.id} {...item} />
+              ))}
+            </div>
+          </div>
         ))}
       </div>
     </div>
