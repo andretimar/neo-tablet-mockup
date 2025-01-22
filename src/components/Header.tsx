@@ -1,6 +1,6 @@
 import { Menu } from "lucide-react";
 
-const Header = () => {
+export const Header = () => {
   return (
     <header className="bg-neo-header text-white p-4 flex justify-between items-center">
       <div className="text-2xl font-bold">NEO INDUSTRIES</div>
