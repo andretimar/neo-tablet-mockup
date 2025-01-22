@@ -37,7 +37,7 @@ const DeliveryNoteCard = ({ note }: { note: DeliveryNote }) => {
 
   return (
     <Card className="transition-all hover:shadow-md">
-      <Link to={`/delivery-notes/${note.id}`}>
+      <Link to={`/delivery-notes/${note.id}/edit`}>
         <div className="flex items-center p-4">
           <div className="flex-1 space-y-1">
             <div className="flex items-center gap-3">
