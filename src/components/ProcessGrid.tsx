@@ -3,9 +3,9 @@ import { Separator } from "./ui/separator";
 
 const mockData = {
   inProgress: [
-    { id: "87602", process: "Disassembly", client: "Samsung", assignee: { name: "John Doe", image: "/placeholder.svg" } },
+    { id: "87602", process: "Disassembly", client: "Samsung", assignee: { name: "John Doe", image: "/placeholder.svg" }, isPriority: true },
     { id: "75036", process: "Grinding", client: "Samsung", pair: "75037", assignee: { name: "Jane Smith", image: "/placeholder.svg" } },
-    { id: "4065", process: "Plating", client: "SKBM", assignee: { name: "Mike Johnson", image: "/placeholder.svg" } },
+    { id: "4065", process: "Plating", client: "SKBM", assignee: { name: "Mike Johnson", image: "/placeholder.svg" }, hasProblem: true },
     { id: "12679", process: "Heat Treat", client: "SKOM", pair: "12680", assignee: { name: "Sarah Wilson", image: "/placeholder.svg" } },
     { id: "3340", process: "Assembly", client: "Samsung", pair: "3341", assignee: { name: "Tom Brown", image: "/placeholder.svg" } },
   ],
@@ -37,7 +37,7 @@ const ProcessGrid = () => {
   ) => {
     const groupedData = groupData(items);
     return (
-      <div className="space-y-4">
+      <div className="space-y-3">
         <h2 className="text-2xl font-bold text-gray-800">{title}</h2>
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
           {(Object.keys(groupedData) as Array<typeof mockData.inProgress[number]["process"]>).map(
@@ -60,9 +60,9 @@ const ProcessGrid = () => {
   };
 
   return (
-    <div className="p-4 space-y-6">
+    <div className="p-4 space-y-4">
       {renderSection("In Progress", mockData.inProgress, true)}
-      <Separator className="my-6" />
+      <Separator className="my-4" />
       {renderSection("Waiting", mockData.waiting, false)}
     </div>
   );

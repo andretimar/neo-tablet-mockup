@@ -7,6 +7,8 @@ interface ProcessCardProps {
     name: string;
     image: string;
   };
+  isPriority?: boolean;
+  hasProblem?: boolean;
 }
 
 const processColors = {
@@ -17,9 +19,15 @@ const processColors = {
   Assembly: "bg-neo-process-assembly",
 };
 
-const ProcessCard = ({ id, process, client, pair, assignee }: ProcessCardProps) => {
+const ProcessCard = ({ id, process, client, pair, assignee, isPriority, hasProblem }: ProcessCardProps) => {
+  const getBackgroundColor = () => {
+    if (isPriority) return "bg-amber-50";
+    if (hasProblem) return "bg-red-50";
+    return "bg-white";
+  };
+
   return (
-    <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden h-[140px]">
+    <div className={`${getBackgroundColor()} rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden h-[140px]`}>
       <div className="p-3 h-full flex flex-col">
         <div className="flex items-center justify-between mb-2">
           <span className="text-3xl font-bold text-gray-800">{id}</span>
@@ -27,18 +35,20 @@ const ProcessCard = ({ id, process, client, pair, assignee }: ProcessCardProps) 
             {process}
           </span>
         </div>
-        <div className="space-y-1">
-          <div className="text-sm text-gray-600">
-            Client: <span className="font-medium text-gray-800">{client}</span>
-          </div>
-          {pair && (
+        <div className="flex flex-col h-full">
+          <div className="space-y-1">
             <div className="text-sm text-gray-600">
-              Pair: <span className="font-medium text-gray-800">{pair}</span>
+              Client: <span className="font-medium text-gray-800">{client}</span>
             </div>
-          )}
-          <div className="flex items-center mt-1">
+            {pair && (
+              <div className="text-sm text-gray-600">
+                Pair: <span className="font-medium text-gray-800">{pair}</span>
+              </div>
+            )}
+          </div>
+          <div className="flex items-center mt-auto pt-3 border-t border-gray-100">
             <img
-              src="/placeholder.svg"
+              src={assignee?.image || "/placeholder.svg"}
               alt={assignee?.name || "Unassigned"}
               className="w-6 h-6 rounded-full mr-2"
             />
