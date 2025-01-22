@@ -5,13 +5,15 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
+import Header from "@/components/Header";
 
 const EditItem = () => {
   const { id } = useParams();
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4">
-      <div className="max-w-6xl mx-auto space-y-4">
+    <div className="min-h-screen bg-gray-100">
+      <Header />
+      <div className="max-w-6xl mx-auto space-y-4 p-4">
         {/* Header with process steps */}
         <div className="grid grid-cols-5 gap-4 mb-6">
           {["Disassembly", "Grinding", "Plating", "Heat Treatment", "Assembly"].map((step, index) => (
@@ -28,8 +30,8 @@ const EditItem = () => {
 
         {/* Main content */}
         <div className="bg-white rounded-lg p-6 shadow-sm">
-          {/* Top section */}
-          <div className="flex items-center justify-between mb-6">
+          {/* Top section with border */}
+          <div className="flex items-center justify-between mb-6 pb-6 border-b border-gray-200">
             <div>
               <div className="text-sm text-gray-500">Roll ID</div>
               <div className="text-2xl font-bold text-blue-600">{id}</div>
@@ -47,8 +49,8 @@ const EditItem = () => {
 
           {/* Two column layout */}
           <div className="grid grid-cols-[240px,1fr] gap-6">
-            {/* Left sidebar */}
-            <div className="space-y-1">
+            {/* Left sidebar with border */}
+            <div className="space-y-1 border-r border-gray-200 pr-4">
               {[
                 "General Information",
                 "Disassembly",
@@ -58,10 +60,14 @@ const EditItem = () => {
                 "Assembly",
                 "Information",
                 "Logs"
-              ].map((item) => (
+              ].map((item, index) => (
                 <div
                   key={item}
-                  className="p-3 hover:bg-gray-100 cursor-pointer rounded-lg text-gray-700"
+                  className={`p-3 rounded-lg cursor-pointer ${
+                    index === 0 
+                      ? "bg-gray-100 text-gray-900 font-medium" 
+                      : "text-gray-700 hover:bg-gray-50"
+                  }`}
                 >
                   {item}
                 </div>

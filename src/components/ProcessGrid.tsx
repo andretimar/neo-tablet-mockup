@@ -27,7 +27,7 @@ const ProcessGrid = () => {
       }
       acc[process].push(item);
       return acc;
-    }, {} as Record<typeof mockData.inProgress[number]["process"], typeof mockData.inProgress>);
+    }, {} as { [K in typeof mockData.inProgress[number]["process"]]: typeof mockData.inProgress });
   };
 
   const renderSection = (
@@ -40,7 +40,7 @@ const ProcessGrid = () => {
       <div className="space-y-3">
         <h2 className="text-2xl font-bold text-gray-800">{title}</h2>
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
-          {(Object.keys(groupedData) as Array<typeof mockData.inProgress[number]["process"]>).map(
+          {(Object.keys(groupedData) as Array<keyof typeof groupedData>).map(
             (process) => (
               <div key={process} className="space-y-3">
                 {showProcessLabels && (
