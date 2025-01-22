@@ -19,14 +19,15 @@ const mockData = {
 } as const;
 
 type ProcessType = typeof mockData.inProgress[number]["process"];
-type GroupedData = Record<ProcessType, typeof mockData.inProgress>;
+type ProcessItem = typeof mockData.inProgress[number];
+type GroupedData = Record<ProcessType, ProcessItem[]>;
 
 const ProcessGrid = () => {
-  const groupData = (items: typeof mockData.inProgress | typeof mockData.waiting): GroupedData => {
+  const groupData = (items: ProcessItem[]): GroupedData => {
     return items.reduce((acc, item) => {
       const process = item.process;
       if (!acc[process]) {
-        acc[process] = [] as typeof mockData.inProgress;
+        acc[process] = [];
       }
       acc[process] = [...acc[process], item];
       return acc;
@@ -35,7 +36,7 @@ const ProcessGrid = () => {
 
   const renderSection = (
     title: string,
-    items: typeof mockData.inProgress | typeof mockData.waiting,
+    items: ProcessItem[],
     showProcessLabels: boolean = true
   ) => {
     const groupedData = groupData(items);
