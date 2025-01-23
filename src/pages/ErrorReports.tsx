@@ -1,9 +1,10 @@
 import { useState } from "react";
 import Header from "@/components/Header";
 import { Card } from "@/components/ui/card";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Plus } from "lucide-react";
 import { Link } from "react-router-dom";
 import SearchAndFilter from "@/components/SearchAndFilter";
+import { Button } from "@/components/ui/button";
 
 interface ErrorReport {
   id: string;
@@ -83,9 +84,17 @@ const ErrorReports = () => {
     <div className="min-h-screen bg-gray-50">
       <Header />
       <main className="container max-w-4xl py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Error Reports</h1>
-          <p className="text-gray-600">Track and manage error reports</p>
+        <div className="mb-8 flex justify-between items-center">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">Error Reports</h1>
+            <p className="text-gray-600">Track and manage error reports</p>
+          </div>
+          <Link to="/error-reports/new">
+            <Button className="gap-2">
+              <Plus className="h-4 w-4" />
+              New Report
+            </Button>
+          </Link>
         </div>
 
         <SearchAndFilter
