@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { FileUp, FileText, AlertCircle, CheckCircle } from "lucide-react";
+import { FileUp, AlertCircle, CheckCircle } from "lucide-react";
 
 const EditItem = () => {
   const { id } = useParams();
@@ -51,10 +51,6 @@ const EditItem = () => {
               <div className="text-sm text-gray-500">Customer</div>
               <div className="text-xl font-semibold">Samsung</div>
             </div>
-            <div className="space-y-1">
-              <div className="text-sm text-gray-500">Due Date</div>
-              <div className="text-xl font-semibold">2025.03.01</div>
-            </div>
             <div className="space-x-4">
               <Button variant="outline" onClick={() => document.getElementById('file-input')?.click()}>
                 <FileUp className="mr-2 h-4 w-4" />
@@ -71,15 +67,6 @@ const EditItem = () => {
                 />
                 Attach Files
               </Button>
-</lov-replace>
-
-<lov-search>
-            <div className="space-y-1">
-              <div className="text-sm text-gray-500">Due Date</div>
-              <div className="text-xl font-semibold">2025.03.01</div>
-            </div>
-</lov-search>
-<lov-replace>
               <Button variant="outline" className="text-green-600">
                 <CheckCircle className="mr-2 h-4 w-4" />
                 Mark as Done
