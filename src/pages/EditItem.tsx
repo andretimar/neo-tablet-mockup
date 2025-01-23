@@ -1,21 +1,30 @@
-import { useParams } from "react-router-dom";
-import { Card } from "@/components/ui/card";
+import { useNavigate, useParams } from "react-router-dom";
+import { useState } from "react";
+import Header from "@/components/Header";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import Header from "@/components/Header";
-import { FilePlus, QrCode, FileText } from "lucide-react";
 
 const EditItem = () => {
   const { id } = useParams();
+  const [showReportMenu, setShowReportMenu] = useState(false);
+  const [isTopPriority, setIsTopPriority] = useState(false);
+
+  const quickReports = [
+    "Damaged during process",
+    "Missing components",
+    "Wrong specifications",
+    "Quality issues",
+    "Other"
+  ];
 
   return (
     <div className="min-h-screen bg-gray-100">
       <Header />
       <div className="max-w-6xl mx-auto space-y-4 p-4">
-        {/* Header with process steps */}
+        {/* Process steps */}
         <div className="grid grid-cols-5 gap-4 mb-6">
           {["Disassembly", "Grinding", "Plating", "Heat Treatment", "Assembly"].map((step, index) => (
             <button
@@ -31,7 +40,7 @@ const EditItem = () => {
 
         {/* Main content */}
         <div className="bg-white rounded-lg p-6 shadow-sm">
-          {/* Top section with border */}
+          {/* Top section */}
           <div className="flex items-center justify-between mb-6 pb-6 border-b border-gray-200">
             <div>
               <div className="text-sm text-gray-500">Roll ID</div>
@@ -46,24 +55,54 @@ const EditItem = () => {
               <div className="text-xl font-semibold">2025.03.01</div>
             </div>
             <div className="space-x-4">
-              <Button variant="outline">
-                <FilePlus className="mr-2 h-4 w-4" />
-                Attach
+              <Button variant="outline" onClick={() => document.getElementById('file-input')?.click()}>
+                <input
+                  type="file"
+                  id="file-input"
+                  className="hidden"
+                  multiple
+                  accept="image/*"
+                  onChange={(e) => {
+                    // Handle file attachment
+                    console.log(e.target.files);
+                  }}
+                />
+                Attach Files
               </Button>
-              <Button variant="outline" className="text-green-600">
-                <QrCode className="mr-2 h-4 w-4" />
-                Generate Q.R.
-              </Button>
-              <Button variant="outline" className="text-red-600">
-                <FileText className="mr-2 h-4 w-4" />
-                Report
-              </Button>
+              <div className="relative inline-block">
+                <Button 
+                  variant="outline" 
+                  className="text-red-600"
+                  onClick={() => setShowReportMenu(!showReportMenu)}
+                >
+                  Report an Issue
+                </Button>
+                {showReportMenu && (
+                  <div className="absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                    <div className="py-1">
+                      {quickReports.map((report) => (
+                        <button
+                          key={report}
+                          className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                          onClick={() => {
+                            // Handle quick report
+                            console.log(`Quick report: ${report}`);
+                            setShowReportMenu(false);
+                          }}
+                        >
+                          {report}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 
           {/* Two column layout */}
           <div className="grid grid-cols-[240px,1fr] gap-6">
-            {/* Left sidebar with border */}
+            {/* Left sidebar */}
             <div className="space-y-1 border-r border-gray-200 pr-4">
               {[
                 "General Information",
@@ -117,18 +156,15 @@ const EditItem = () => {
                         <Switch />
                       </div>
                     </div>
-                  </div>
-
-                  <div>
-                    <Label>Sample data</Label>
-                    <Select defaultValue="new1">
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select value" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="new1">new value 1</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <div>
+                      <Label>Top Priority</Label>
+                      <div className="mt-2">
+                        <Switch
+                          checked={isTopPriority}
+                          onCheckedChange={setIsTopPriority}
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -146,20 +182,8 @@ const EditItem = () => {
                   </div>
 
                   <div>
-                    <Label>Date of disassembly</Label>
+                    <Label>Due date</Label>
                     <Input type="date" />
-                  </div>
-
-                  <div>
-                    <Label>Sample data</Label>
-                    <Select defaultValue="new1">
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select value" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="new1">new value 1</SelectItem>
-                      </SelectContent>
-                    </Select>
                   </div>
                 </div>
               </div>

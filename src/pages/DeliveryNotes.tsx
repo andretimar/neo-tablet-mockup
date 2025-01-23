@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import SearchAndFilter from "@/components/SearchAndFilter";
+import CreateDeliveryNoteDialog from "@/components/CreateDeliveryNoteDialog";
 
 interface DeliveryNote {
   id: string;
@@ -77,9 +78,12 @@ const DeliveryNotes = () => {
     <div className="min-h-screen bg-gray-50">
       <Header />
       <main className="container max-w-4xl py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Delivery Notes</h1>
-          <p className="text-gray-600">Manage and track your delivery notes</p>
+        <div className="flex justify-between items-center mb-8">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">Delivery Notes</h1>
+            <p className="text-gray-600">Manage and track your delivery notes</p>
+          </div>
+          <CreateDeliveryNoteDialog />
         </div>
 
         <SearchAndFilter

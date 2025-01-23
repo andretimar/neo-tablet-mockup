@@ -30,14 +30,14 @@ const ProcessCard = ({ id, process, client, pair, assignee, isPriority, hasProbl
       className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden h-[160px] cursor-pointer relative"
       onClick={() => navigate(`/edit/${id}`)}
     >
-      <div className="p-3 h-full flex flex-col">
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-3xl font-bold text-gray-800">{id}</span>
-          <span className={`${processColors[process]} px-3 py-1 rounded-full text-sm font-medium`}>
+      <div className="p-4 h-full flex flex-col">
+        <div className="flex items-center justify-between mb-3">
+          <span className="text-2xl font-bold text-gray-800">{id}</span>
+          <span className={`${processColors[process]} px-3 py-1 rounded-full text-sm font-medium ml-2`}>
             {process}
           </span>
         </div>
-        <div className="space-y-1 flex-grow">
+        <div className="space-y-2 flex-grow">
           <div className="text-sm text-gray-600">
             Client: <span className="font-medium text-gray-800">{client}</span>
           </div>

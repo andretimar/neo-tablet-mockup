@@ -61,9 +61,9 @@ const HomeListView = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "high":
-        return "bg-red-100 text-red-800";
+        return "bg-amber-100 text-amber-800";
       case "medium":
-        return "bg-yellow-100 text-yellow-800";
+        return "bg-blue-100 text-blue-800";
       case "low":
         return "bg-green-100 text-green-800";
       default:
@@ -89,65 +89,66 @@ const HomeListView = () => {
         </div>
 
         <div className="flex gap-4 mb-6 items-center">
-          <Select
-            value={filters.rollId}
-            onValueChange={(value) =>
-              setFilters({ ...filters, rollId: value })
-            }
-          >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Select Roll ID" />
-            </SelectTrigger>
-            <SelectContent>
-              {items.map((item) => (
-                <SelectItem key={item.id} value={item.id}>
-                  {item.id}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-
-          <Select
-            value={filters.status}
-            onValueChange={(value) =>
-              setFilters({ ...filters, status: value })
-            }
-          >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Select Status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="high">High Priority</SelectItem>
-              <SelectItem value="medium">Medium Priority</SelectItem>
-              <SelectItem value="low">Low Priority</SelectItem>
-            </SelectContent>
-          </Select>
-
-          <Select
-            value={filters.customer}
-            onValueChange={(value) =>
-              setFilters({ ...filters, customer: value })
-            }
-          >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Select Customer" />
-            </SelectTrigger>
-            <SelectContent>
-              {Array.from(new Set(items.map((item) => item.customer))).map(
-                (customer) => (
-                  <SelectItem key={customer} value={customer}>
-                    {customer}
+          <div className="flex-1 grid grid-cols-3 gap-4">
+            <Select
+              value={filters.rollId}
+              onValueChange={(value) =>
+                setFilters({ ...filters, rollId: value })
+              }
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select Roll ID" />
+              </SelectTrigger>
+              <SelectContent>
+                {items.map((item) => (
+                  <SelectItem key={item.id} value={item.id}>
+                    {item.id}
                   </SelectItem>
-                )
-              )}
-            </SelectContent>
-          </Select>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <Select
+              value={filters.status}
+              onValueChange={(value) =>
+                setFilters({ ...filters, status: value })
+              }
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select Status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="high">High Priority</SelectItem>
+                <SelectItem value="medium">Medium Priority</SelectItem>
+                <SelectItem value="low">Low Priority</SelectItem>
+              </SelectContent>
+            </Select>
+
+            <Select
+              value={filters.customer}
+              onValueChange={(value) =>
+                setFilters({ ...filters, customer: value })
+              }
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select Customer" />
+              </SelectTrigger>
+              <SelectContent>
+                {Array.from(new Set(items.map((item) => item.customer))).map(
+                  (customer) => (
+                    <SelectItem key={customer} value={customer}>
+                      {customer}
+                    </SelectItem>
+                  )
+                )}
+              </SelectContent>
+            </Select>
+          </div>
 
           <Button
             variant="outline"
             size="icon"
             onClick={clearFilters}
-            className="ml-auto"
           >
             <X className="h-4 w-4" />
           </Button>
@@ -160,7 +161,7 @@ const HomeListView = () => {
                 <div className="flex items-center p-4">
                   <div className="flex-1 space-y-1">
                     <div className="flex items-center gap-3">
-                      <span className="text-lg font-semibold">#{item.id}</span>
+                      <span className="text-lg font-semibold">{item.id}</span>
                       <span
                         className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(
                           item.status

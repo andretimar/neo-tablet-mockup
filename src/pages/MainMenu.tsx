@@ -1,7 +1,7 @@
 import { Header } from "@/components/Header";
 import { Card } from "@/components/ui/card";
 import { Link } from "react-router-dom";
-import { FileText, Database, Truck, AlertTriangle, Home } from "lucide-react";
+import { FileText, Database, AlertTriangle, Home, FileQuestion } from "lucide-react";
 
 const MenuCard = ({ title, to, icon: Icon, description }: { 
   title: string; 
@@ -45,10 +45,10 @@ const MainMenu = () => {
       description: "Track and resolve reported errors"
     },
     {
-      title: "Logistics",
-      to: "/logistics",
-      icon: Truck,
-      description: "Monitor shipping and logistics"
+      title: "Information",
+      to: "/information",
+      icon: FileQuestion,
+      description: "Access documentation and guides"
     }
   ];
 
