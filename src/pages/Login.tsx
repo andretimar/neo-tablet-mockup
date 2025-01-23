@@ -17,7 +17,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
+    <div className="min-h-screen flex items-center justify-center bg-blue">
       <div className="w-full max-w-md space-y-8 p-8">
         <div className="space-y-2 text-center">
           <img 
@@ -25,36 +25,38 @@ const Login = () => {
             alt="NEO Industries" 
             className="h-12 mx-auto mb-8"
           />
-          <p className="text-center text-gray-600">
+          <p className="text-center text-white">
             Welcome to the NEO Operation application. Please select your plant below and click the login button below.
           </p>
         </div>
 
         <form onSubmit={handleLogin} className="space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="email">Email address</Label>
+            <Label htmlFor="email" className="text-white">Email address</Label>
             <Input
               id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              className="bg-white/10 text-white placeholder:text-white/70"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password" className="text-white">Password</Label>
             <Input
               id="password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              className="bg-white/10 text-white placeholder:text-white/70"
             />
           </div>
 
           <div className="space-y-2">
-            <Label>Plant</Label>
+            <Label className="text-white">Plant</Label>
             <Select value={plant} onValueChange={setPlant}>
-              <SelectTrigger>
+              <SelectTrigger className="bg-white/10 text-white border-white/20">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -63,11 +65,11 @@ const Login = () => {
             </Select>
           </div>
 
-          <Button type="submit" className="w-full bg-blue">
+          <Button type="submit" className="w-full bg-white text-blue hover:bg-white/90">
             Log In
           </Button>
 
-          <p className="text-center text-sm text-gray-500">
+          <p className="text-center text-sm text-white/70">
             If you don't have an account yet please contact your plant manager.
           </p>
         </form>
