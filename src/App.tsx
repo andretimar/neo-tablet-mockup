@@ -14,6 +14,7 @@ import Index from "./pages/Index";
 import HomeListView from "./pages/HomeListView";
 import Inventory from "./pages/Inventory";
 import InventoryDetails from "./pages/InventoryDetails";
+import Information from "./pages/Information";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ const App = () => (
           <Route path="/inventory/:id" element={<InventoryDetails />} />
           <Route path="/edit/:id" element={<EditItem />} />
           <Route path="/home-list-view" element={<HomeListView />} />
+          <Route path="/information" element={<Information />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>

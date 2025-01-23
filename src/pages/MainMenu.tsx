@@ -48,7 +48,7 @@ const MainMenu = () => {
       title: "Information",
       to: "/information",
       icon: FileQuestion,
-      description: "Access documentation and guides"
+      description: "Access company documents and information"
     }
   ];
 
