@@ -11,13 +11,15 @@ const Index = () => {
       <WarningBanner />
       <Header />
       <div className="container max-w-7xl py-8">
-        <Link to="/home-list-view">
-          <Button variant="outline" className="gap-2">
-            <List className="h-4 w-4" />
-            List View
-          </Button>
-        </Link>
         <ProcessGrid />
+        <div className="flex justify-center mt-8">
+          <Link to="/home-list-view">
+            <Button variant="outline" className="gap-2">
+              <List className="h-4 w-4" />
+              List View
+            </Button>
+          </Link>
+        </div>
       </div>
     </div>
   );
