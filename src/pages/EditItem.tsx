@@ -71,10 +71,15 @@ const EditItem = () => {
                 />
                 Attach Files
               </Button>
-              <Button variant="outline">
-                <FileText className="mr-2 h-4 w-4" />
-                Generate Report
-              </Button>
+</lov-replace>
+
+<lov-search>
+            <div className="space-y-1">
+              <div className="text-sm text-gray-500">Due Date</div>
+              <div className="text-xl font-semibold">2025.03.01</div>
+            </div>
+</lov-search>
+<lov-replace>
               <Button variant="outline" className="text-green-600">
                 <CheckCircle className="mr-2 h-4 w-4" />
                 Mark as Done
