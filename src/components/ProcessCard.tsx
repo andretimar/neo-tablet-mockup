@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { Star, AlertOctagon } from "lucide-react";
 
 interface ProcessCardProps {
   id: string;
@@ -24,15 +25,9 @@ const processColors = {
 const ProcessCard = ({ id, process, client, pair, assignee, isPriority, hasProblem }: ProcessCardProps) => {
   const navigate = useNavigate();
 
-  const getBackgroundColor = () => {
-    if (isPriority) return "bg-amber-50";
-    if (hasProblem) return "bg-red-50";
-    return "bg-white";
-  };
-
   return (
     <div 
-      className={`${getBackgroundColor()} rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden h-[140px] cursor-pointer relative`}
+      className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden h-[160px] cursor-pointer relative"
       onClick={() => navigate(`/edit/${id}`)}
     >
       <div className="p-3 h-full flex flex-col">
@@ -42,7 +37,7 @@ const ProcessCard = ({ id, process, client, pair, assignee, isPriority, hasProbl
             {process}
           </span>
         </div>
-        <div className="space-y-1">
+        <div className="space-y-1 flex-grow">
           <div className="text-sm text-gray-600">
             Client: <span className="font-medium text-gray-800">{client}</span>
           </div>
@@ -53,13 +48,19 @@ const ProcessCard = ({ id, process, client, pair, assignee, isPriority, hasProbl
           )}
         </div>
         <div className="absolute bottom-0 left-0 right-0 p-3 bg-white bg-opacity-90">
-          <div className="flex items-center">
-            <img
-              src={assignee?.image || "/placeholder.svg"}
-              alt={assignee?.name || "Unassigned"}
-              className="w-6 h-6 rounded-full mr-2"
-            />
-            <span className="text-sm text-gray-600">{assignee?.name || "Unassigned"}</span>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <img
+                src={assignee?.image || "/placeholder.svg"}
+                alt={assignee?.name || "Unassigned"}
+                className="w-6 h-6 rounded-full mr-2"
+              />
+              <span className="text-sm text-gray-600">{assignee?.name || "Unassigned"}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              {isPriority && <Star className="w-5 h-5 text-amber-500" />}
+              {hasProblem && <AlertOctagon className="w-5 h-5 text-red-500" />}
+            </div>
           </div>
         </div>
       </div>

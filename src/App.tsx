@@ -10,6 +10,7 @@ import EditItem from "./pages/EditItem";
 import ErrorReports from "./pages/ErrorReports";
 import Index from "./pages/Index";
 import Inventory from "./pages/Inventory";
+import InventoryDetails from "./pages/InventoryDetails";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,7 @@ const App = () => (
           <Route path="/delivery-notes/:id/edit" element={<EditDeliveryNote />} />
           <Route path="/error-reports" element={<ErrorReports />} />
           <Route path="/inventory" element={<Inventory />} />
+          <Route path="/inventory/:id" element={<InventoryDetails />} />
           <Route path="/edit/:id" element={<EditItem />} />
         </Routes>
       </BrowserRouter>
