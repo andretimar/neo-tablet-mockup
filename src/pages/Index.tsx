@@ -10,7 +10,7 @@ const Index = () => {
     <div className="min-h-screen bg-gray-100">
       <WarningBanner />
       <Header />
-      <div className="container max-w-7xl py-8">
+      <div className="container max-w-7xl py-4">
         <ProcessGrid />
         <div className="flex justify-center mt-8">
           <Link to="/home-list-view">
