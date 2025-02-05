@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { FileUp, AlertCircle, CheckCircle, History, Link as LinkIcon, Clock } from "lucide-react";
+import { FileUp, AlertCircle, CheckCircle, History, Link as LinkIcon, Clock, FileText, Info, File } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const EditItem = () => {
@@ -211,15 +211,15 @@ const EditItem = () => {
             {/* Left sidebar */}
             <div className="space-y-1 border-r border-gray-200 pr-4">
               {[
-                { name: "General Information", id: "general" },
+                { name: "General Information", id: "general", icon: Info },
                 { name: "Disassembly", id: "disassembly" },
                 { name: "Grinding", id: "grinding" },
                 { name: "Plating", id: "plating" },
                 { name: "Heat Treat", id: "heattreat" },
                 { name: "Assembly", id: "assembly" },
-                { name: "Information", id: "information" },
-                { name: "History", id: "history" },
-                { name: "Logs", id: "logs" }
+                { name: "Information", id: "information", icon: FileText },
+                { name: "History", id: "history", icon: History },
+                { name: "Logs", id: "logs", icon: File }
               ].map((item) => (
                 <div
                   key={item.id}
@@ -230,7 +230,7 @@ const EditItem = () => {
                   }`}
                   onClick={() => setActiveTab(item.id)}
                 >
-                  {item.name === "History" && <History className="mr-2 h-4 w-4" />}
+                  {item.icon && <item.icon className="mr-2 h-4 w-4" />}
                   {item.name}
                 </div>
               ))}
@@ -312,6 +312,50 @@ const EditItem = () => {
                     ))}
                   </TableBody>
                 </Table>
+              ) : activeTab === "information" ? (
+                <div className="space-y-8">
+                  <div className="space-y-4">
+                    <h3 className="text-xl font-semibold text-gray-900">Client Instructions</h3>
+                    <div className="p-4 bg-gray-50 rounded-lg text-gray-700">
+                      The client has specified that this roll requires special handling during the plating process. 
+                      Ensure that the chromium coating is applied evenly and meets the thickness requirements of 0.3mm ± 0.02mm. 
+                      The surface finish must achieve Ra 0.4μm or better. Temperature during plating should not exceed 55°C.
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <h3 className="text-xl font-semibold text-gray-900">Item Instructions</h3>
+                    <div className="p-4 bg-gray-50 rounded-lg text-gray-700">
+                      This is a high-precision calendar roll used in paper manufacturing. Before disassembly, 
+                      mark all components and document their original positions. During reassembly, maintain 
+                      precise alignment and follow the torque specifications provided in the technical manual. 
+                      Special attention should be paid to the bearing housings and sealing surfaces.
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <h3 className="text-xl font-semibold text-gray-900">Related Documents</h3>
+                    <div className="grid grid-cols-2 gap-4">
+                      {[
+                        { name: "Technical Specifications.pdf", size: "2.4 MB" },
+                        { name: "Quality Requirements.pdf", size: "1.8 MB" },
+                        { name: "Assembly Instructions.pdf", size: "3.1 MB" },
+                        { name: "Safety Guidelines.pdf", size: "1.2 MB" }
+                      ].map((doc) => (
+                        <div 
+                          key={doc.name}
+                          className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer"
+                        >
+                          <FileText className="h-5 w-5 text-blue-600" />
+                          <div className="flex-1">
+                            <div className="text-sm font-medium text-gray-900">{doc.name}</div>
+                            <div className="text-xs text-gray-500">{doc.size}</div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               ) : (
                 <>
                   <div className="grid grid-cols-2 gap-6">
