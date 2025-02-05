@@ -6,12 +6,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { FileUp, AlertCircle, CheckCircle } from "lucide-react";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { FileUp, AlertCircle, CheckCircle, History } from "lucide-react";
 
 const EditItem = () => {
   const { id } = useParams();
   const [showReportMenu, setShowReportMenu] = useState(false);
   const [isTopPriority, setIsTopPriority] = useState(false);
+  const [activeTab, setActiveTab] = useState("general");
 
   const quickReports = [
     "Damaged during process",
@@ -19,6 +21,14 @@ const EditItem = () => {
     "Wrong specifications",
     "Quality issues",
     "Other"
+  ];
+
+  // Sample history data
+  const historyData = [
+    { date: "2024-02-20", action: "Status Change", user: "John Doe", details: "Changed to Grinding" },
+    { date: "2024-02-19", action: "Priority Update", user: "Jane Smith", details: "Set to High Priority" },
+    { date: "2024-02-18", action: "Comment Added", user: "Mike Johnson", details: "Added inspection notes" },
+    { date: "2024-02-17", action: "Process Start", user: "Sarah Williams", details: "Started Disassembly" },
   ];
 
   return (
@@ -61,7 +71,6 @@ const EditItem = () => {
                   multiple
                   accept="image/*"
                   onChange={(e) => {
-                    // Handle file attachment
                     console.log(e.target.files);
                   }}
                 />
@@ -88,7 +97,6 @@ const EditItem = () => {
                           key={report}
                           className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                           onClick={() => {
-                            // Handle quick report
                             console.log(`Quick report: ${report}`);
                             setShowReportMenu(false);
                           }}
@@ -108,101 +116,129 @@ const EditItem = () => {
             {/* Left sidebar */}
             <div className="space-y-1 border-r border-gray-200 pr-4">
               {[
-                "General Information",
-                "Disassembly",
-                "Grinding",
-                "Plating",
-                "Heat Treat",
-                "Assembly",
-                "Information",
-                "Logs"
-              ].map((item, index) => (
+                { name: "General Information", id: "general" },
+                { name: "Disassembly", id: "disassembly" },
+                { name: "Grinding", id: "grinding" },
+                { name: "Plating", id: "plating" },
+                { name: "Heat Treat", id: "heattreat" },
+                { name: "Assembly", id: "assembly" },
+                { name: "Information", id: "information" },
+                { name: "History", id: "history" },
+                { name: "Logs", id: "logs" }
+              ].map((item) => (
                 <div
-                  key={item}
-                  className={`p-3 rounded-lg cursor-pointer ${
-                    index === 0 
+                  key={item.id}
+                  className={`p-3 rounded-lg cursor-pointer flex items-center ${
+                    activeTab === item.id 
                       ? "bg-gray-100 text-gray-900 font-medium" 
                       : "text-gray-700 hover:bg-gray-50"
                   }`}
+                  onClick={() => setActiveTab(item.id)}
                 >
-                  {item}
+                  {item.name === "History" && <History className="mr-2 h-4 w-4" />}
+                  {item.name}
                 </div>
               ))}
             </div>
 
             {/* Right content */}
             <div className="space-y-6">
-              <div className="grid grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  <div>
-                    <Label>Pair ID</Label>
-                    <Select defaultValue="87602">
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select pair ID" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="87602">87602</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
+              {activeTab === "history" ? (
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Date</TableHead>
+                      <TableHead>Action</TableHead>
+                      <TableHead>User</TableHead>
+                      <TableHead>Details</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {historyData.map((record, index) => (
+                      <TableRow key={index}>
+                        <TableCell>{record.date}</TableCell>
+                        <TableCell>{record.action}</TableCell>
+                        <TableCell>{record.user}</TableCell>
+                        <TableCell>{record.details}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              ) : (
+                <>
+                  <div className="grid grid-cols-2 gap-6">
+                    <div className="space-y-4">
+                      <div>
+                        <Label>Pair ID</Label>
+                        <Select defaultValue="87602">
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select pair ID" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="87602">87602</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
 
-                  <div className="space-y-4">
-                    <div>
-                      <Label>Problems found</Label>
-                      <div className="mt-2">
-                        <Switch />
+                      <div className="space-y-4">
+                        <div>
+                          <Label>Problems found</Label>
+                          <div className="mt-2">
+                            <Switch />
+                          </div>
+                        </div>
+                        <div>
+                          <Label>Waiting in line</Label>
+                          <div className="mt-2">
+                            <Switch />
+                          </div>
+                        </div>
+                        <div>
+                          <Label>Top Priority</Label>
+                          <div className="mt-2">
+                            <Switch
+                              checked={isTopPriority}
+                              onCheckedChange={setIsTopPriority}
+                            />
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <div>
-                      <Label>Waiting in line</Label>
-                      <div className="mt-2">
-                        <Switch />
+
+                    <div className="space-y-4">
+                      <div>
+                        <Label>Assignee</Label>
+                        <Select defaultValue="operator1">
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select operator" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="operator1">Test Operator #1</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div>
+                        <Label>Due date</Label>
+                        <Input type="date" />
                       </div>
                     </div>
-                    <div>
-                      <Label>Top Priority</Label>
-                      <div className="mt-2">
-                        <Switch
-                          checked={isTopPriority}
-                          onCheckedChange={setIsTopPriority}
-                        />
-                      </div>
+                  </div>
+
+                  {/* Attached photos */}
+                  <div>
+                    <Label className="mb-3 block">Attached photos</Label>
+                    <div className="grid grid-cols-4 gap-4">
+                      {[1, 2, 3, 4].map((i) => (
+                        <div key={i} className="aspect-square bg-gray-200 rounded-lg"></div>
+                      ))}
                     </div>
                   </div>
-                </div>
 
-                <div className="space-y-4">
-                  <div>
-                    <Label>Assignee</Label>
-                    <Select defaultValue="operator1">
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select operator" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="operator1">Test Operator #1</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div>
-                    <Label>Due date</Label>
-                    <Input type="date" />
-                  </div>
-                </div>
-              </div>
-
-              {/* Attached photos */}
-              <div>
-                <Label className="mb-3 block">Attached photos</Label>
-                <div className="grid grid-cols-4 gap-4">
-                  {[1, 2, 3, 4].map((i) => (
-                    <div key={i} className="aspect-square bg-gray-200 rounded-lg"></div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Save button */}
-              <Button className="w-full bg-green-500 hover:bg-green-600">Save</Button>
+                  {/* Save button */}
+                  <Button className="w-full bg-green-500 hover:bg-green-600">Save</Button>
+                </>
+              )}
             </div>
           </div>
         </div>
