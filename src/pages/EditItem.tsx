@@ -243,9 +243,9 @@ const EditItem = () => {
             </div>
 
             {/* Right content */}
-            <div className="space-y-6">
+            <div className="h-[calc(100vh-280px)] overflow-hidden">
               {activeTab === "logs" ? (
-                <div className="space-y-4">
+                <div className="h-full overflow-y-auto pr-4">
                   {logEntries.map((entry) => (
                     <div key={entry.id} className="p-3 bg-gray-50 rounded-lg">
                       <div className="flex items-center gap-2 text-sm text-gray-600 mb-1">
@@ -270,100 +270,104 @@ const EditItem = () => {
                   ))}
                 </div>
               ) : activeTab === "history" ? (
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Job ID</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Delivery Note ID</TableHead>
-                      <TableHead>Error Reports</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {historyData.map((record) => (
-                      <TableRow key={record.jobId}>
-                        <TableCell className="font-medium">#{record.jobId}</TableCell>
-                        <TableCell>
-                          <Badge 
-                            variant="outline" 
-                            className={getStatusBadgeStyle(record.status)}
-                          >
-                            {record.status.charAt(0).toUpperCase() + record.status.slice(1)}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>
-                          <Link 
-                            to={`/delivery-notes/${record.deliveryNoteId}`}
-                            className="flex items-center text-blue-600 hover:text-blue-800"
-                          >
-                            <LinkIcon className="h-4 w-4 mr-1" />
-                            {record.deliveryNoteId}
-                          </Link>
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex gap-2">
-                            {record.errorReports.map((errorId) => (
-                              <Link
-                                key={errorId}
-                                to={`/error-reports/${errorId}`}
-                                className="flex items-center text-red-600 hover:text-red-800"
-                              >
-                                <AlertCircle className="h-4 w-4 mr-1" />
-                                {errorId}
-                              </Link>
-                            ))}
-                          </div>
-                        </TableCell>
+                <div className="h-full overflow-y-auto pr-4">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Job ID</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead>Delivery Note ID</TableHead>
+                        <TableHead>Error Reports</TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              ) : activeTab === "information" ? (
-                <div className="space-y-8">
-                  <div className="space-y-4">
-                    <h3 className="text-xl font-semibold text-gray-900">Client Instructions</h3>
-                    <div className="p-4 bg-gray-50 rounded-lg text-gray-700">
-                      The client has specified that this roll requires special handling during the plating process. 
-                      Ensure that the chromium coating is applied evenly and meets the thickness requirements of 0.3mm ± 0.02mm. 
-                      The surface finish must achieve Ra 0.4μm or better. Temperature during plating should not exceed 55°C.
-                    </div>
-                  </div>
-
-                  <div className="space-y-4">
-                    <h3 className="text-xl font-semibold text-gray-900">Item Instructions</h3>
-                    <div className="p-4 bg-gray-50 rounded-lg text-gray-700">
-                      This is a high-precision calendar roll used in paper manufacturing. Before disassembly, 
-                      mark all components and document their original positions. During reassembly, maintain 
-                      precise alignment and follow the torque specifications provided in the technical manual. 
-                      Special attention should be paid to the bearing housings and sealing surfaces.
-                    </div>
-                  </div>
-
-                  <div className="space-y-4">
-                    <h3 className="text-xl font-semibold text-gray-900">Related Documents</h3>
-                    <div className="grid grid-cols-2 gap-4">
-                      {[
-                        { name: "Technical Specifications.pdf", size: "2.4 MB" },
-                        { name: "Quality Requirements.pdf", size: "1.8 MB" },
-                        { name: "Assembly Instructions.pdf", size: "3.1 MB" },
-                        { name: "Safety Guidelines.pdf", size: "1.2 MB" }
-                      ].map((doc) => (
-                        <div 
-                          key={doc.name}
-                          className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer"
-                        >
-                          <FileText className="h-5 w-5 text-blue-600" />
-                          <div className="flex-1">
-                            <div className="text-sm font-medium text-gray-900">{doc.name}</div>
-                            <div className="text-xs text-gray-500">{doc.size}</div>
-                          </div>
-                        </div>
+                    </TableHeader>
+                    <TableBody>
+                      {historyData.map((record) => (
+                        <TableRow key={record.jobId}>
+                          <TableCell className="font-medium">#{record.jobId}</TableCell>
+                          <TableCell>
+                            <Badge 
+                              variant="outline" 
+                              className={getStatusBadgeStyle(record.status)}
+                            >
+                              {record.status.charAt(0).toUpperCase() + record.status.slice(1)}
+                            </Badge>
+                          </TableCell>
+                          <TableCell>
+                            <Link 
+                              to={`/delivery-notes/${record.deliveryNoteId}`}
+                              className="flex items-center text-blue-600 hover:text-blue-800"
+                            >
+                              <LinkIcon className="h-4 w-4 mr-1" />
+                              {record.deliveryNoteId}
+                            </Link>
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex gap-2">
+                              {record.errorReports.map((errorId) => (
+                                <Link
+                                  key={errorId}
+                                  to={`/error-reports/${errorId}`}
+                                  className="flex items-center text-red-600 hover:text-red-800"
+                                >
+                                  <AlertCircle className="h-4 w-4 mr-1" />
+                                  {errorId}
+                                </Link>
+                              ))}
+                            </div>
+                          </TableCell>
+                        </TableRow>
                       ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              ) : activeTab === "information" ? (
+                <div className="h-full overflow-y-auto pr-4">
+                  <div className="space-y-8">
+                    <div className="space-y-4">
+                      <h3 className="text-xl font-semibold text-gray-900">Client Instructions</h3>
+                      <div className="p-4 bg-gray-50 rounded-lg text-gray-700">
+                        The client has specified that this roll requires special handling during the plating process. 
+                        Ensure that the chromium coating is applied evenly and meets the thickness requirements of 0.3mm ± 0.02mm. 
+                        The surface finish must achieve Ra 0.4μm or better. Temperature during plating should not exceed 55°C.
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      <h3 className="text-xl font-semibold text-gray-900">Item Instructions</h3>
+                      <div className="p-4 bg-gray-50 rounded-lg text-gray-700">
+                        This is a high-precision calendar roll used in paper manufacturing. Before disassembly, 
+                        mark all components and document their original positions. During reassembly, maintain 
+                        precise alignment and follow the torque specifications provided in the technical manual. 
+                        Special attention should be paid to the bearing housings and sealing surfaces.
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      <h3 className="text-xl font-semibold text-gray-900">Related Documents</h3>
+                      <div className="grid grid-cols-2 gap-4">
+                        {[
+                          { name: "Technical Specifications.pdf", size: "2.4 MB" },
+                          { name: "Quality Requirements.pdf", size: "1.8 MB" },
+                          { name: "Assembly Instructions.pdf", size: "3.1 MB" },
+                          { name: "Safety Guidelines.pdf", size: "1.2 MB" }
+                        ].map((doc) => (
+                          <div 
+                            key={doc.name}
+                            className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer"
+                          >
+                            <FileText className="h-5 w-5 text-blue-600" />
+                            <div className="flex-1">
+                              <div className="text-sm font-medium text-gray-900">{doc.name}</div>
+                              <div className="text-xs text-gray-500">{doc.size}</div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
               ) : activeTab === "disassembly" ? (
-                <div className="space-y-6">
+                <div className="h-full overflow-y-auto pr-4 space-y-6">
                   <div className="grid grid-cols-2 gap-6">
                     <div className="space-y-4">
                       {[
@@ -379,24 +383,16 @@ const EditItem = () => {
                         { id: "inner_race_2", label: "Inner Race 2", hint: "Second inner race specifications" },
                         { id: "outer_race_1", label: "Outer Race 1", hint: "First outer race specifications" }
                       ].map((field) => (
-                        <div key={field.id}>
-                          <TooltipProvider>
-                            <Tooltip>
-                              <TooltipTrigger asChild>
-                                <Label htmlFor={field.id} className="block text-sm font-medium text-gray-700">
-                                  {field.label}
-                                </Label>
-                              </TooltipTrigger>
-                              <TooltipContent>
-                                <p>{field.hint}</p>
-                              </TooltipContent>
-                            </Tooltip>
-                          </TooltipProvider>
+                        <div key={field.id} className="space-y-1">
+                          <Label htmlFor={field.id} className="block text-sm font-medium text-gray-700">
+                            {field.label}
+                          </Label>
                           <Input
                             id={field.id}
-                            className="mt-1"
+                            className="w-full"
                             placeholder={`Enter ${field.label.toLowerCase()}`}
                           />
+                          <p className="text-sm text-gray-500">{field.hint}</p>
                         </div>
                       ))}
                     </div>
@@ -414,111 +410,71 @@ const EditItem = () => {
                         { id: "outer_race_4", label: "Outer Race 4", hint: "Fourth outer race specifications" },
                         { id: "housing_ds", label: "Housing DS", hint: "Drive side housing condition" }
                       ].map((field) => (
-                        <div key={field.id}>
-                          <TooltipProvider>
-                            <Tooltip>
-                              <TooltipTrigger asChild>
-                                <Label htmlFor={field.id} className="block text-sm font-medium text-gray-700">
-                                  {field.label}
-                                </Label>
-                              </TooltipTrigger>
-                              <TooltipContent>
-                                <p>{field.hint}</p>
-                              </TooltipContent>
-                            </Tooltip>
-                          </TooltipProvider>
+                        <div key={field.id} className="space-y-1">
+                          <Label htmlFor={field.id} className="block text-sm font-medium text-gray-700">
+                            {field.label}
+                          </Label>
                           <Input
                             id={field.id}
-                            className="mt-1"
+                            className="w-full"
                             placeholder={`Enter ${field.label.toLowerCase()}`}
                           />
+                          <p className="text-sm text-gray-500">{field.hint}</p>
                         </div>
                       ))}
                     </div>
                   </div>
 
                   <div className="space-y-4">
-                    <div>
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <Label htmlFor="date_of_disassembly" className="block text-sm font-medium text-gray-700">
-                              Date of Disassembly
-                            </Label>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>Select the date and time when disassembly was performed</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
+                    <div className="space-y-1">
+                      <Label htmlFor="date_of_disassembly" className="block text-sm font-medium text-gray-700">
+                        Date of Disassembly
+                      </Label>
                       <Input
                         id="date_of_disassembly"
                         type="datetime-local"
-                        className="mt-1"
+                        className="w-full"
                       />
+                      <p className="text-sm text-gray-500">Select the date and time when disassembly was performed</p>
                     </div>
 
-                    <div>
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <Label htmlFor="disassembly_operators" className="block text-sm font-medium text-gray-700">
-                              Disassembly Operators
-                            </Label>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>Enter the names of operators who performed the disassembly</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
+                    <div className="space-y-1">
+                      <Label htmlFor="disassembly_operators" className="block text-sm font-medium text-gray-700">
+                        Disassembly Operators
+                      </Label>
                       <Input
                         id="disassembly_operators"
-                        className="mt-1"
+                        className="w-full"
                         placeholder="Enter operator names"
                       />
+                      <p className="text-sm text-gray-500">Enter the names of operators who performed the disassembly</p>
                     </div>
 
-                    <div>
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <Label htmlFor="replaced_parts" className="block text-sm font-medium text-gray-700">
-                              Replaced Parts
-                            </Label>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>List any parts that were replaced during disassembly</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
+                    <div className="space-y-1">
+                      <Label htmlFor="replaced_parts" className="block text-sm font-medium text-gray-700">
+                        Replaced Parts
+                      </Label>
                       <Input
                         id="replaced_parts"
-                        className="mt-1"
+                        className="w-full"
                         placeholder="Enter replaced parts"
                       />
+                      <p className="text-sm text-gray-500">List any parts that were replaced during disassembly</p>
                     </div>
 
-                    <div>
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <Label className="block text-sm font-medium text-gray-700">
-                              Replacement Required
-                            </Label>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>Indicate if replacement is needed (Yes/No)</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                      <Switch className="mt-1" />
+                    <div className="space-y-1">
+                      <Label className="block text-sm font-medium text-gray-700">
+                        Replacement Required
+                      </Label>
+                      <Switch />
+                      <p className="text-sm text-gray-500">Indicate if replacement is needed (Yes/No)</p>
                     </div>
                   </div>
 
-                  <Button className="w-full">Save Disassembly Information</Button>
+                  <Button className="w-full bg-green-500 hover:bg-green-600">Save Disassembly Information</Button>
                 </div>
               ) : (
-                <>
+                <div className="h-full overflow-y-auto pr-4">
                   <div className="grid grid-cols-2 gap-6">
                     <div className="space-y-4">
                       <div>
@@ -590,7 +546,7 @@ const EditItem = () => {
 
                   {/* Save button */}
                   <Button className="w-full bg-green-500 hover:bg-green-600">Save</Button>
-                </>
+                </div>
               )}
             </div>
           </div>
