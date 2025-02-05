@@ -8,8 +8,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { FileUp, AlertCircle, CheckCircle, History, Link as LinkIcon, Clock, FileText, Info, File } from "lucide-react";
+import { FileUp, AlertCircle, CheckCircle, History, Link as LinkIcon, Clock, FileText, Info, File, Wrench } from "lucide-react";
 import { Link } from "react-router-dom";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const EditItem = () => {
   const { id } = useParams();
@@ -212,7 +218,7 @@ const EditItem = () => {
             <div className="space-y-1 border-r border-gray-200 pr-4">
               {[
                 { name: "General Information", id: "general", icon: Info },
-                { name: "Disassembly", id: "disassembly" },
+                { name: "Disassembly", id: "disassembly", icon: Wrench },
                 { name: "Grinding", id: "grinding" },
                 { name: "Plating", id: "plating" },
                 { name: "Heat Treat", id: "heattreat" },
@@ -355,6 +361,161 @@ const EditItem = () => {
                       ))}
                     </div>
                   </div>
+                </div>
+              ) : activeTab === "disassembly" ? (
+                <div className="space-y-6">
+                  <div className="grid grid-cols-2 gap-6">
+                    <div className="space-y-4">
+                      {[
+                        { id: "end_cover", label: "End Cover", hint: "Enter the end cover specifications and condition" },
+                        { id: "bender_frame", label: "Bender Frame", hint: "Document the bender frame details" },
+                        { id: "thrust_bearing_os", label: "Thrust Bearing OS", hint: "Operating side thrust bearing details" },
+                        { id: "thrust_bearing_ds", label: "Thrust Bearing DS", hint: "Drive side thrust bearing details" },
+                        { id: "clamp_snapring_os", label: "Clamp Snapring OS", hint: "Operating side snapring specifications" },
+                        { id: "sleeve_os", label: "Sleeve OS", hint: "Operating side sleeve measurements" },
+                        { id: "key_os", label: "Key OS", hint: "Operating side key dimensions" },
+                        { id: "barrel_rollers_os", label: "Barrel Rollers OS", hint: "Operating side roller conditions" },
+                        { id: "inner_race_1", label: "Inner Race 1", hint: "First inner race specifications" },
+                        { id: "inner_race_2", label: "Inner Race 2", hint: "Second inner race specifications" },
+                        { id: "outer_race_1", label: "Outer Race 1", hint: "First outer race specifications" }
+                      ].map((field) => (
+                        <div key={field.id}>
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <Label htmlFor={field.id} className="block text-sm font-medium text-gray-700">
+                                  {field.label}
+                                </Label>
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p>{field.hint}</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                          <Input
+                            id={field.id}
+                            className="mt-1"
+                            placeholder={`Enter ${field.label.toLowerCase()}`}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                    <div className="space-y-4">
+                      {[
+                        { id: "outer_race_2", label: "Outer Race 2", hint: "Second outer race specifications" },
+                        { id: "housing_os", label: "Housing OS", hint: "Operating side housing condition" },
+                        { id: "clamp_snapring_ds", label: "Clamp Snapring DS", hint: "Drive side snapring specifications" },
+                        { id: "sleeve_ds", label: "Sleeve DS", hint: "Drive side sleeve measurements" },
+                        { id: "key_ds", label: "Key DS", hint: "Drive side key dimensions" },
+                        { id: "barrel_rollers_ds", label: "Barrel Rollers DS", hint: "Drive side roller conditions" },
+                        { id: "inner_race_3", label: "Inner Race 3", hint: "Third inner race specifications" },
+                        { id: "inner_race_4", label: "Inner Race 4", hint: "Fourth inner race specifications" },
+                        { id: "outer_race_3", label: "Outer Race 3", hint: "Third outer race specifications" },
+                        { id: "outer_race_4", label: "Outer Race 4", hint: "Fourth outer race specifications" },
+                        { id: "housing_ds", label: "Housing DS", hint: "Drive side housing condition" }
+                      ].map((field) => (
+                        <div key={field.id}>
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <Label htmlFor={field.id} className="block text-sm font-medium text-gray-700">
+                                  {field.label}
+                                </Label>
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p>{field.hint}</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                          <Input
+                            id={field.id}
+                            className="mt-1"
+                            placeholder={`Enter ${field.label.toLowerCase()}`}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div>
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Label htmlFor="date_of_disassembly" className="block text-sm font-medium text-gray-700">
+                              Date of Disassembly
+                            </Label>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>Select the date and time when disassembly was performed</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                      <Input
+                        id="date_of_disassembly"
+                        type="datetime-local"
+                        className="mt-1"
+                      />
+                    </div>
+
+                    <div>
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Label htmlFor="disassembly_operators" className="block text-sm font-medium text-gray-700">
+                              Disassembly Operators
+                            </Label>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>Enter the names of operators who performed the disassembly</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                      <Input
+                        id="disassembly_operators"
+                        className="mt-1"
+                        placeholder="Enter operator names"
+                      />
+                    </div>
+
+                    <div>
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Label htmlFor="replaced_parts" className="block text-sm font-medium text-gray-700">
+                              Replaced Parts
+                            </Label>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>List any parts that were replaced during disassembly</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                      <Input
+                        id="replaced_parts"
+                        className="mt-1"
+                        placeholder="Enter replaced parts"
+                      />
+                    </div>
+
+                    <div>
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Label className="block text-sm font-medium text-gray-700">
+                              Replacement Required
+                            </Label>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>Indicate if replacement is needed (Yes/No)</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                      <Switch className="mt-1" />
+                    </div>
+                  </div>
+
+                  <Button className="w-full">Save Disassembly Information</Button>
                 </div>
               ) : (
                 <>
