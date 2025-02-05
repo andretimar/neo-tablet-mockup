@@ -239,51 +239,30 @@ const EditItem = () => {
             {/* Right content */}
             <div className="space-y-6">
               {activeTab === "logs" ? (
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Time</TableHead>
-                      <TableHead>User</TableHead>
-                      <TableHead>Field</TableHead>
-                      <TableHead>Change</TableHead>
-                      <TableHead>Type</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {logEntries.map((entry) => (
-                      <TableRow key={entry.id}>
-                        <TableCell className="whitespace-nowrap">
-                          <div className="flex items-center text-gray-600">
-                            <Clock className="h-4 w-4 mr-1" />
-                            {entry.timestamp}
-                          </div>
-                        </TableCell>
-                        <TableCell>{entry.user}</TableCell>
-                        <TableCell className="font-medium">{entry.field}</TableCell>
-                        <TableCell>
-                          <div className="flex flex-col gap-1">
-                            <div className="text-gray-500 text-sm line-through">
-                              {entry.oldValue}
-                            </div>
-                            <div className="text-gray-900">
-                              {entry.newValue}
-                            </div>
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <Badge 
-                            variant="outline" 
-                            className={getLogBadgeStyle(entry.type)}
-                          >
-                            {entry.type.split('_').map(word => 
-                              word.charAt(0).toUpperCase() + word.slice(1)
-                            ).join(' ')}
-                          </Badge>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                <div className="space-y-4">
+                  {logEntries.map((entry) => (
+                    <div key={entry.id} className="p-3 bg-gray-50 rounded-lg">
+                      <div className="flex items-center gap-2 text-sm text-gray-600 mb-1">
+                        <Clock className="h-4 w-4" />
+                        {entry.timestamp}
+                      </div>
+                      <p className="text-gray-900">
+                        <span className="font-medium">{entry.user}</span> changed{" "}
+                        <span className="font-medium">{entry.field}</span> from{" "}
+                        <span className="text-gray-500 line-through">{entry.oldValue}</span> to{" "}
+                        <span className="text-blue-600">{entry.newValue}</span>
+                        <Badge 
+                          variant="outline" 
+                          className={`ml-2 ${getLogBadgeStyle(entry.type)}`}
+                        >
+                          {entry.type.split('_').map(word => 
+                            word.charAt(0).toUpperCase() + word.slice(1)
+                          ).join(' ')}
+                        </Badge>
+                      </p>
+                    </div>
+                  ))}
+                </div>
               ) : activeTab === "history" ? (
                 <Table>
                   <TableHeader>
