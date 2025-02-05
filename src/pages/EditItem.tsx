@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { FileUp, AlertCircle, CheckCircle, History, Link as LinkIcon } from "lucide-react";
+import { FileUp, AlertCircle, CheckCircle, History, Link as LinkIcon, Clock } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const EditItem = () => {
@@ -55,6 +55,72 @@ const EditItem = () => {
         return "bg-red-100 text-red-800 hover:bg-red-100";
       case "in_progress":
         return "bg-blue-100 text-blue-800 hover:bg-blue-100";
+      default:
+        return "";
+    }
+  };
+
+  // Sample log entries data
+  const logEntries = [
+    {
+      id: "log-001",
+      timestamp: "2024-02-21 14:30:22",
+      user: "John Smith",
+      field: "Top Priority",
+      oldValue: "No",
+      newValue: "Yes",
+      type: "value_change"
+    },
+    {
+      id: "log-002",
+      timestamp: "2024-02-21 13:15:45",
+      user: "Sarah Connor",
+      field: "Assignee",
+      oldValue: "Test Operator #2",
+      newValue: "Test Operator #1",
+      type: "assignment"
+    },
+    {
+      id: "log-003",
+      timestamp: "2024-02-21 11:20:33",
+      user: "Mike Johnson",
+      field: "Due Date",
+      oldValue: "2024-03-01",
+      newValue: "2024-03-15",
+      type: "date_change"
+    },
+    {
+      id: "log-004",
+      timestamp: "2024-02-21 10:05:12",
+      user: "Emma Davis",
+      field: "Status",
+      oldValue: "Grinding",
+      newValue: "Plating",
+      type: "status_change"
+    },
+    {
+      id: "log-005",
+      timestamp: "2024-02-21 09:30:00",
+      user: "Alex Wilson",
+      field: "Problems Found",
+      oldValue: "No",
+      newValue: "Yes",
+      type: "issue_report"
+    }
+  ];
+
+  const getLogBadgeStyle = (type: string) => {
+    switch (type) {
+      case "value_change":
+        return "bg-blue-100 text-blue-800 hover:bg-blue-100";
+      case "assignment":
+        return "bg-purple-100 text-purple-800 hover:bg-purple-100";
+      case "date_change":
+        return "bg-orange-100 text-orange-800 hover:bg-orange-100";
+      case "status_change":
+        return "bg-green-100 text-green-800 hover:bg-green-100";
+      case "issue_report":
+        return "bg-red-100 text-red-800 hover:bg-red-100";
       default:
         return "";
     }
@@ -172,7 +238,53 @@ const EditItem = () => {
 
             {/* Right content */}
             <div className="space-y-6">
-              {activeTab === "history" ? (
+              {activeTab === "logs" ? (
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Time</TableHead>
+                      <TableHead>User</TableHead>
+                      <TableHead>Field</TableHead>
+                      <TableHead>Change</TableHead>
+                      <TableHead>Type</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {logEntries.map((entry) => (
+                      <TableRow key={entry.id}>
+                        <TableCell className="whitespace-nowrap">
+                          <div className="flex items-center text-gray-600">
+                            <Clock className="h-4 w-4 mr-1" />
+                            {entry.timestamp}
+                          </div>
+                        </TableCell>
+                        <TableCell>{entry.user}</TableCell>
+                        <TableCell className="font-medium">{entry.field}</TableCell>
+                        <TableCell>
+                          <div className="flex flex-col gap-1">
+                            <div className="text-gray-500 text-sm line-through">
+                              {entry.oldValue}
+                            </div>
+                            <div className="text-gray-900">
+                              {entry.newValue}
+                            </div>
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <Badge 
+                            variant="outline" 
+                            className={getLogBadgeStyle(entry.type)}
+                          >
+                            {entry.type.split('_').map(word => 
+                              word.charAt(0).toUpperCase() + word.slice(1)
+                            ).join(' ')}
+                          </Badge>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              ) : activeTab === "history" ? (
                 <Table>
                   <TableHeader>
                     <TableRow>
