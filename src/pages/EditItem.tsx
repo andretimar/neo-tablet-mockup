@@ -7,7 +7,9 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { FileUp, AlertCircle, CheckCircle, History } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { FileUp, AlertCircle, CheckCircle, History, Link as LinkIcon } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const EditItem = () => {
   const { id } = useParams();
@@ -25,11 +27,38 @@ const EditItem = () => {
 
   // Sample history data
   const historyData = [
-    { date: "2024-02-20", action: "Status Change", user: "John Doe", details: "Changed to Grinding" },
-    { date: "2024-02-19", action: "Priority Update", user: "Jane Smith", details: "Set to High Priority" },
-    { date: "2024-02-18", action: "Comment Added", user: "Mike Johnson", details: "Added inspection notes" },
-    { date: "2024-02-17", action: "Process Start", user: "Sarah Williams", details: "Started Disassembly" },
+    { 
+      jobId: 1001,
+      status: "completed",
+      deliveryNoteId: "DN-2024-001",
+      errorReports: []
+    },
+    { 
+      jobId: 1002,
+      status: "failed",
+      deliveryNoteId: "DN-2024-002",
+      errorReports: ["ERR-001", "ERR-002"]
+    },
+    { 
+      jobId: 1003,
+      status: "in_progress",
+      deliveryNoteId: "DN-2024-003",
+      errorReports: []
+    },
   ];
+
+  const getStatusBadgeStyle = (status: string) => {
+    switch (status) {
+      case "completed":
+        return "bg-green-100 text-green-800 hover:bg-green-100";
+      case "failed":
+        return "bg-red-100 text-red-800 hover:bg-red-100";
+      case "in_progress":
+        return "bg-blue-100 text-blue-800 hover:bg-blue-100";
+      default:
+        return "";
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -147,19 +176,47 @@ const EditItem = () => {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Date</TableHead>
-                      <TableHead>Action</TableHead>
-                      <TableHead>User</TableHead>
-                      <TableHead>Details</TableHead>
+                      <TableHead>Job ID</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Delivery Note ID</TableHead>
+                      <TableHead>Error Reports</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {historyData.map((record, index) => (
-                      <TableRow key={index}>
-                        <TableCell>{record.date}</TableCell>
-                        <TableCell>{record.action}</TableCell>
-                        <TableCell>{record.user}</TableCell>
-                        <TableCell>{record.details}</TableCell>
+                    {historyData.map((record) => (
+                      <TableRow key={record.jobId}>
+                        <TableCell className="font-medium">#{record.jobId}</TableCell>
+                        <TableCell>
+                          <Badge 
+                            variant="outline" 
+                            className={getStatusBadgeStyle(record.status)}
+                          >
+                            {record.status.charAt(0).toUpperCase() + record.status.slice(1)}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          <Link 
+                            to={`/delivery-notes/${record.deliveryNoteId}`}
+                            className="flex items-center text-blue-600 hover:text-blue-800"
+                          >
+                            <LinkIcon className="h-4 w-4 mr-1" />
+                            {record.deliveryNoteId}
+                          </Link>
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex gap-2">
+                            {record.errorReports.map((errorId) => (
+                              <Link
+                                key={errorId}
+                                to={`/error-reports/${errorId}`}
+                                className="flex items-center text-red-600 hover:text-red-800"
+                              >
+                                <AlertCircle className="h-4 w-4 mr-1" />
+                                {errorId}
+                              </Link>
+                            ))}
+                          </div>
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
