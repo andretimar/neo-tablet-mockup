@@ -24,7 +24,6 @@ import { Input } from "@/components/ui/input";
 
 interface ErrorReportForm {
   rollId: string;
-  date: string;
   status: string;
   reason: string;
   comments: string;
@@ -109,19 +108,6 @@ const CreateErrorReport = () => {
                         <SelectItem value="87604">87604</SelectItem>
                       </SelectContent>
                     </Select>
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="date"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Date</FormLabel>
-                    <FormControl>
-                      <Input type="date" {...field} />
-                    </FormControl>
                   </FormItem>
                 )}
               />

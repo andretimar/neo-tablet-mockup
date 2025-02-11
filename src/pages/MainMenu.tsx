@@ -1,3 +1,4 @@
+
 import { Header } from "@/components/Header";
 import { Card } from "@/components/ui/card";
 import { Link } from "react-router-dom";
@@ -53,7 +54,7 @@ const MainMenu = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gray-100">
       <Header />
       <main className="container py-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-8">Main Menu</h1>
