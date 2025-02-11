@@ -9,7 +9,7 @@ import { Switch } from "@/components/ui/switch";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { FileUp, AlertCircle, CheckCircle, History, Link as LinkIcon, Clock, FileText, Info, File, Wrench } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Tooltip,
   TooltipContent,
@@ -19,6 +19,7 @@ import {
 
 const EditItem = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [showReportMenu, setShowReportMenu] = useState(false);
   const [isTopPriority, setIsTopPriority] = useState(false);
   const [activeTab, setActiveTab] = useState("general");
@@ -31,7 +32,6 @@ const EditItem = () => {
     "Other"
   ];
 
-  // Sample history data
   const historyData = [
     { 
       jobId: 1001,
@@ -66,7 +66,6 @@ const EditItem = () => {
     }
   };
 
-  // Sample log entries data
   const logEntries = [
     {
       id: "log-001",
@@ -136,7 +135,6 @@ const EditItem = () => {
     <div className="min-h-screen bg-gray-100">
       <Header />
       <div className="max-w-6xl mx-auto space-y-4 p-4">
-        {/* Process steps */}
         <div className="grid grid-cols-5 gap-4 mb-6">
           {["Disassembly", "Grinding", "Plating", "Heat Treatment", "Assembly"].map((step, index) => (
             <button
@@ -150,9 +148,7 @@ const EditItem = () => {
           ))}
         </div>
 
-        {/* Main content */}
         <div className="bg-white rounded-lg p-6 shadow-sm">
-          {/* Top section */}
           <div className="flex items-center justify-between mb-6 pb-6 border-b border-gray-200">
             <div>
               <div className="text-sm text-gray-500">Roll ID</div>
@@ -179,46 +175,24 @@ const EditItem = () => {
               </Button>
               <Button variant="outline" className="text-green-600">
                 <CheckCircle className="mr-2 h-4 w-4" />
-                Mark as Done
+                Approve
               </Button>
-              <div className="relative inline-block">
-                <Button 
-                  variant="outline" 
-                  className="text-red-600"
-                  onClick={() => setShowReportMenu(!showReportMenu)}
-                >
-                  <AlertCircle className="mr-2 h-4 w-4" />
-                  Report an Issue
-                </Button>
-                {showReportMenu && (
-                  <div className="absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
-                    <div className="py-1">
-                      {quickReports.map((report) => (
-                        <button
-                          key={report}
-                          className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                          onClick={() => {
-                            console.log(`Quick report: ${report}`);
-                            setShowReportMenu(false);
-                          }}
-                        >
-                          {report}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
+              <Button 
+                variant="outline" 
+                className="text-red-600"
+                onClick={() => navigate(`/error-reports/new`)}
+              >
+                <AlertCircle className="mr-2 h-4 w-4" />
+                Report an Issue
+              </Button>
             </div>
           </div>
 
-          {/* Two column layout */}
           <div className="grid grid-cols-[240px,1fr] gap-6">
-            {/* Left sidebar */}
             <div className="space-y-1 border-r border-gray-200 pr-4">
               {[
                 { name: "General Information", id: "general", icon: Info },
-                { name: "Disassembly", id: "disassembly", icon: Wrench },
+                { name: "Disassembly", id: "disassembly" },
                 { name: "Grinding", id: "grinding" },
                 { name: "Plating", id: "plating" },
                 { name: "Heat Treat", id: "heattreat" },
@@ -242,7 +216,6 @@ const EditItem = () => {
               ))}
             </div>
 
-            {/* Right content */}
             <div className="h-[calc(100vh-280px)] overflow-hidden">
               {activeTab === "logs" ? (
                 <div className="h-full overflow-y-auto pr-4">
@@ -534,8 +507,7 @@ const EditItem = () => {
                     </div>
                   </div>
 
-                  {/* Attached photos */}
-                  <div>
+                  <div className="mb-8">
                     <Label className="mb-3 block">Attached photos</Label>
                     <div className="grid grid-cols-4 gap-4">
                       {[1, 2, 3, 4].map((i) => (
@@ -544,7 +516,6 @@ const EditItem = () => {
                     </div>
                   </div>
 
-                  {/* Save button */}
                   <Button className="w-full bg-green-500 hover:bg-green-600">Save</Button>
                 </div>
               )}
