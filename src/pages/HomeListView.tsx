@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
@@ -18,6 +19,7 @@ interface Item {
   customer: string;
   assignee: string;
   pair?: string;
+  qualityApprovals?: number;
 }
 
 const items: Item[] = [
@@ -27,12 +29,14 @@ const items: Item[] = [
     customer: "Customer A",
     assignee: "John Doe",
     pair: "87603",
+    qualityApprovals: 2,
   },
   {
     id: "87603",
     status: "medium",
     customer: "Customer B",
     assignee: "Jane Smith",
+    qualityApprovals: 1,
   },
   {
     id: "87604",
@@ -154,6 +158,14 @@ const HomeListView = () => {
           </Button>
         </div>
 
+        <style>
+          {`
+            .clip-path-half {
+              clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
+            }
+          `}
+        </style>
+
         <div className="space-y-4">
           {filteredItems.map((item) => (
             <Card key={item.id} className="transition-all hover:shadow-md">
@@ -161,7 +173,20 @@ const HomeListView = () => {
                 <div className="flex items-center p-4">
                   <div className="flex-1 space-y-1">
                     <div className="flex items-center gap-3">
-                      <span className="text-lg font-semibold">{item.id}</span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-lg font-semibold">{item.id}</span>
+                        {(item.qualityApprovals ?? 0) > 0 && (
+                          <div className="relative w-4 h-4">
+                            <div className="absolute inset-0 rounded-full border-2 border-green-500">
+                              <div 
+                                className={`absolute inset-0 bg-green-500 rounded-full ${
+                                  (item.qualityApprovals === 1) ? 'clip-path-half' : ''
+                                }`}
+                              />
+                            </div>
+                          </div>
+                        )}
+                      </div>
                       <span
                         className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(
                           item.status
