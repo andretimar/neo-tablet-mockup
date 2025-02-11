@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useState } from "react";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
