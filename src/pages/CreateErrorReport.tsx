@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
@@ -25,17 +26,37 @@ interface ErrorReportForm {
   rollId: string;
   date: string;
   status: string;
-  cause: string;
+  reason: string;
+  comments: string;
+  replacementParts: string[];
   attachments: FileList | null;
 }
+
+const SAMPLE_PARTS = [
+  "Bearing Assembly",
+  "End Cover",
+  "Thrust Bearing",
+  "Clamp Snapring",
+  "Sleeve",
+  "Key",
+  "Barrel Rollers",
+  "Inner Race",
+  "Outer Race",
+  "Housing",
+];
 
 const CreateErrorReport = () => {
   const navigate = useNavigate();
   const form = useForm<ErrorReportForm>();
   const [files, setFiles] = useState<File[]>([]);
+  const [selectedParts, setSelectedParts] = useState<string[]>([]);
 
   const onSubmit = (data: ErrorReportForm) => {
-    console.log("Form submitted:", data);
+    const formData = {
+      ...data,
+      replacementParts: selectedParts,
+    };
+    console.log("Form submitted:", formData);
     navigate("/error-reports");
   };
 
@@ -43,6 +64,14 @@ const CreateErrorReport = () => {
     if (e.target.files) {
       setFiles(Array.from(e.target.files));
     }
+  };
+
+  const togglePart = (part: string) => {
+    setSelectedParts(prev =>
+      prev.includes(part)
+        ? prev.filter(p => p !== part)
+        : [...prev, part]
+    );
   };
 
   return (
@@ -113,8 +142,7 @@ const CreateErrorReport = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="major">Major Error</SelectItem>
-                        <SelectItem value="error">Error</SelectItem>
+                        <SelectItem value="open">Open</SelectItem>
                         <SelectItem value="resolved">Resolved</SelectItem>
                       </SelectContent>
                     </Select>
@@ -124,13 +152,57 @@ const CreateErrorReport = () => {
 
               <FormField
                 control={form.control}
-                name="cause"
+                name="reason"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Cause</FormLabel>
+                    <FormLabel>Reason</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select reason" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="operator_error">Operator Error</SelectItem>
+                        <SelectItem value="item_quality">Item Quality</SelectItem>
+                        <SelectItem value="other">Other</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormItem>
+                )}
+              />
+
+              <FormItem>
+                <FormLabel>Replacement Parts Used</FormLabel>
+                <div className="grid grid-cols-2 gap-2 mt-2">
+                  {SAMPLE_PARTS.map((part) => (
+                    <div
+                      key={part}
+                      onClick={() => togglePart(part)}
+                      className={`p-2 border rounded-md cursor-pointer transition-colors ${
+                        selectedParts.includes(part)
+                          ? "bg-blue-100 border-blue-500"
+                          : "hover:bg-gray-50"
+                      }`}
+                    >
+                      {part}
+                    </div>
+                  ))}
+                </div>
+              </FormItem>
+
+              <FormField
+                control={form.control}
+                name="comments"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Comments</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="Describe the cause of the error..."
+                        placeholder="Add any comments or additional information..."
                         {...field}
                       />
                     </FormControl>

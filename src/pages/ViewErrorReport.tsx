@@ -1,3 +1,4 @@
+
 import Header from "@/components/Header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -8,13 +9,20 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
 import { useParams } from "react-router-dom";
 
 const mockErrorReport = {
   id: "87602",
   date: "2024-03-15",
-  status: "major",
-  cause: "Machine malfunction during processing phase",
+  status: "open",
+  reason: "operator_error",
+  comments: "Machine malfunction during processing phase",
+  replacementParts: [
+    "Bearing Assembly",
+    "End Cover",
+    "Thrust Bearing"
+  ],
   attachments: [
     "attachment1.jpg",
     "attachment2.jpg"
@@ -23,6 +31,30 @@ const mockErrorReport = {
     { id: "DN001", date: "2024-03-15", status: "Pending" },
     { id: "DN002", date: "2024-03-14", status: "Completed" },
   ]
+};
+
+const getStatusBadgeColor = (status: string) => {
+  switch (status) {
+    case "open":
+      return "bg-red-100 text-red-800";
+    case "resolved":
+      return "bg-green-100 text-green-800";
+    default:
+      return "bg-gray-100 text-gray-800";
+  }
+};
+
+const getReasonDisplay = (reason: string) => {
+  switch (reason) {
+    case "operator_error":
+      return "Operator Error";
+    case "item_quality":
+      return "Item Quality";
+    case "other":
+      return "Other";
+    default:
+      return reason;
+  }
 };
 
 const ViewErrorReport = () => {
@@ -49,13 +81,27 @@ const ViewErrorReport = () => {
                 </div>
                 <div className="flex justify-between">
                   <span className="font-semibold">Status:</span>
-                  <span className="px-2 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">
-                    {mockErrorReport.status}
-                  </span>
+                  <Badge className={getStatusBadgeColor(mockErrorReport.status)}>
+                    {mockErrorReport.status.charAt(0).toUpperCase() + mockErrorReport.status.slice(1)}
+                  </Badge>
+                </div>
+                <div className="flex justify-between">
+                  <span className="font-semibold">Reason:</span>
+                  <span>{getReasonDisplay(mockErrorReport.reason)}</span>
                 </div>
                 <div className="space-y-2">
-                  <span className="font-semibold">Cause:</span>
-                  <p className="text-gray-600">{mockErrorReport.cause}</p>
+                  <span className="font-semibold">Comments:</span>
+                  <p className="text-gray-600">{mockErrorReport.comments}</p>
+                </div>
+                <div className="space-y-2">
+                  <span className="font-semibold">Replacement Parts:</span>
+                  <div className="flex flex-wrap gap-2">
+                    {mockErrorReport.replacementParts.map((part, index) => (
+                      <Badge key={index} variant="secondary">
+                        {part}
+                      </Badge>
+                    ))}
+                  </div>
                 </div>
               </div>
             </CardContent>
