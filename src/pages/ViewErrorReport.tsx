@@ -1,10 +1,9 @@
-
 import Header from "@/components/Header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { User, Link as LinkIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const mockErrorReport = {
   id: "87602",
@@ -59,6 +58,10 @@ const ViewErrorReport = () => {
     <div className="min-h-screen bg-gray-50">
       <Header />
       <main className="container max-w-5xl py-8">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-bold">Error Report #{id}</h1>
+          <Button variant="outline">Edit Report</Button>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Card>
             <CardHeader>
@@ -86,18 +89,14 @@ const ViewErrorReport = () => {
                 </div>
                 <div className="flex justify-between">
                   <span className="font-semibold">Reported by:</span>
-                  <div className="flex items-center gap-2">
-                    <User className="h-4 w-4" />
-                    <span>{mockErrorReport.reportedBy}</span>
-                  </div>
+                  <span>{mockErrorReport.reportedBy}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="font-semibold">Job ID:</span>
                   <Link 
                     to={`/edit/${mockErrorReport.jobId}`}
-                    className="flex items-center gap-2 text-blue-600 hover:text-blue-800"
+                    className="text-blue-600 hover:text-blue-800"
                   >
-                    <LinkIcon className="h-4 w-4" />
                     {mockErrorReport.jobId}
                   </Link>
                 </div>
@@ -105,9 +104,8 @@ const ViewErrorReport = () => {
                   <span className="font-semibold">Item ID:</span>
                   <Link 
                     to={`/edit/${mockErrorReport.itemId}`}
-                    className="flex items-center gap-2 text-blue-600 hover:text-blue-800"
+                    className="text-blue-600 hover:text-blue-800"
                   >
-                    <LinkIcon className="h-4 w-4" />
                     {mockErrorReport.itemId}
                   </Link>
                 </div>
