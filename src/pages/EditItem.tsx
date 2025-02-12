@@ -61,6 +61,10 @@ const EditItem = () => {
         return "bg-red-100 text-red-800 hover:bg-red-100";
       case "in_progress":
         return "bg-blue-100 text-blue-800 hover:bg-blue-100";
+      case "open":
+        return "bg-red-100 text-red-800 hover:bg-red-100";
+      case "resolved":
+        return "bg-green-100 text-green-800 hover:bg-green-100";
       default:
         return "";
     }
@@ -224,12 +228,12 @@ const EditItem = () => {
             <div className="space-y-1 border-r border-gray-200 pr-4">
               {[
                 { name: "General Information", id: "general", icon: Info },
-                { name: "Error Reports", id: "error_reports", icon: AlertCircle },
                 { name: "Disassembly", id: "disassembly" },
                 { name: "Grinding", id: "grinding" },
                 { name: "Plating", id: "plating" },
                 { name: "Heat Treat", id: "heattreat" },
                 { name: "Assembly", id: "assembly" },
+                { name: "Error Reports", id: "error_reports", icon: AlertCircle },
                 { name: "Information", id: "information", icon: FileText },
                 { name: "History", id: "history", icon: History },
                 { name: "Logs", id: "logs", icon: File }
@@ -260,13 +264,19 @@ const EditItem = () => {
                         <TableHead>Status</TableHead>
                         <TableHead>Reason</TableHead>
                         <TableHead>Reported By</TableHead>
-                        <TableHead>Actions</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {mockErrorReports.map((report) => (
                         <TableRow key={report.id}>
-                          <TableCell className="font-medium">{report.id}</TableCell>
+                          <TableCell className="font-medium">
+                            <Link 
+                              to={`/error-reports/${report.id}`}
+                              className="text-blue-600 hover:text-blue-800"
+                            >
+                              {report.id}
+                            </Link>
+                          </TableCell>
                           <TableCell>{report.date}</TableCell>
                           <TableCell>
                             <Badge 
@@ -278,15 +288,6 @@ const EditItem = () => {
                           </TableCell>
                           <TableCell>{getReasonDisplay(report.reason)}</TableCell>
                           <TableCell>{report.reportedBy}</TableCell>
-                          <TableCell>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => navigate(`/error-reports/${report.id}`)}
-                            >
-                              View
-                            </Button>
-                          </TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
