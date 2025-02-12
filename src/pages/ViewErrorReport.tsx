@@ -1,16 +1,10 @@
 
 import Header from "@/components/Header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { User, Link as LinkIcon } from "lucide-react";
 
 const mockErrorReport = {
   id: "87602",
@@ -25,12 +19,13 @@ const mockErrorReport = {
   ],
   attachments: [
     "attachment1.jpg",
-    "attachment2.jpg"
+    "attachment2.jpg",
+    "attachment3.jpg",
+    "attachment4.jpg"
   ],
-  relatedDeliveryNotes: [
-    { id: "DN001", date: "2024-03-15", status: "Pending" },
-    { id: "DN002", date: "2024-03-14", status: "Completed" },
-  ]
+  reportedBy: "John Smith",
+  jobId: "JB-1001",
+  itemId: "IT-2001"
 };
 
 const getStatusBadgeColor = (status: string) => {
@@ -89,6 +84,33 @@ const ViewErrorReport = () => {
                   <span className="font-semibold">Reason:</span>
                   <span>{getReasonDisplay(mockErrorReport.reason)}</span>
                 </div>
+                <div className="flex justify-between">
+                  <span className="font-semibold">Reported by:</span>
+                  <div className="flex items-center gap-2">
+                    <User className="h-4 w-4" />
+                    <span>{mockErrorReport.reportedBy}</span>
+                  </div>
+                </div>
+                <div className="flex justify-between">
+                  <span className="font-semibold">Job ID:</span>
+                  <Link 
+                    to={`/edit/${mockErrorReport.jobId}`}
+                    className="flex items-center gap-2 text-blue-600 hover:text-blue-800"
+                  >
+                    <LinkIcon className="h-4 w-4" />
+                    {mockErrorReport.jobId}
+                  </Link>
+                </div>
+                <div className="flex justify-between">
+                  <span className="font-semibold">Item ID:</span>
+                  <Link 
+                    to={`/edit/${mockErrorReport.itemId}`}
+                    className="flex items-center gap-2 text-blue-600 hover:text-blue-800"
+                  >
+                    <LinkIcon className="h-4 w-4" />
+                    {mockErrorReport.itemId}
+                  </Link>
+                </div>
                 <div className="space-y-2">
                   <span className="font-semibold">Comments:</span>
                   <p className="text-gray-600">{mockErrorReport.comments}</p>
@@ -97,7 +119,7 @@ const ViewErrorReport = () => {
                   <span className="font-semibold">Replacement Parts:</span>
                   <div className="flex flex-wrap gap-2">
                     {mockErrorReport.replacementParts.map((part, index) => (
-                      <Badge key={index} variant="secondary">
+                      <Badge key={index} variant="secondary" className="text-base">
                         {part}
                       </Badge>
                     ))}
@@ -129,32 +151,6 @@ const ViewErrorReport = () => {
             </CardContent>
           </Card>
         </div>
-
-        <Card className="mt-6">
-          <CardHeader>
-            <CardTitle>Related Delivery Notes</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Delivery Note ID</TableHead>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Status</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {mockErrorReport.relatedDeliveryNotes.map((note) => (
-                  <TableRow key={note.id}>
-                    <TableCell className="font-medium">{note.id}</TableCell>
-                    <TableCell>{note.date}</TableCell>
-                    <TableCell>{note.status}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
       </main>
     </div>
   );
