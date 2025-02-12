@@ -65,7 +65,7 @@ const ViewErrorReport = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Card>
             <CardHeader>
-              <CardTitle>Error Report Details</CardTitle>
+              <CardTitle>Details</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">

@@ -131,6 +131,34 @@ const EditItem = () => {
     }
   };
 
+  const mockErrorReports = [
+    { 
+      id: "ERR-001", 
+      date: "2024-03-15",
+      status: "open",
+      reason: "operator_error",
+      reportedBy: "John Smith"
+    },
+    { 
+      id: "ERR-002", 
+      date: "2024-03-14",
+      status: "resolved",
+      reason: "item_quality",
+      reportedBy: "Sarah Connor"
+    }
+  ];
+
+  const getReasonDisplay = (reason: string) => {
+    switch (reason) {
+      case "operator_error":
+        return "Operator Error";
+      case "item_quality":
+        return "Item Quality";
+      default:
+        return reason;
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-100">
       <Header />
@@ -157,6 +185,10 @@ const EditItem = () => {
             <div className="space-y-1">
               <div className="text-sm text-gray-500">Customer</div>
               <div className="text-xl font-semibold">Samsung</div>
+            </div>
+            <div className="space-y-1">
+              <div className="text-sm text-gray-500">Job ID</div>
+              <div className="text-xl font-semibold">JB-1001</div>
             </div>
             <div className="space-x-4">
               <Button variant="outline" onClick={() => document.getElementById('file-input')?.click()}>
@@ -192,6 +224,7 @@ const EditItem = () => {
             <div className="space-y-1 border-r border-gray-200 pr-4">
               {[
                 { name: "General Information", id: "general", icon: Info },
+                { name: "Error Reports", id: "error_reports", icon: AlertCircle },
                 { name: "Disassembly", id: "disassembly" },
                 { name: "Grinding", id: "grinding" },
                 { name: "Plating", id: "plating" },
@@ -217,7 +250,49 @@ const EditItem = () => {
             </div>
 
             <div className="h-[calc(100vh-280px)] overflow-hidden">
-              {activeTab === "logs" ? (
+              {activeTab === "error_reports" ? (
+                <div className="h-full overflow-y-auto pr-4">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Report ID</TableHead>
+                        <TableHead>Date</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead>Reason</TableHead>
+                        <TableHead>Reported By</TableHead>
+                        <TableHead>Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {mockErrorReports.map((report) => (
+                        <TableRow key={report.id}>
+                          <TableCell className="font-medium">{report.id}</TableCell>
+                          <TableCell>{report.date}</TableCell>
+                          <TableCell>
+                            <Badge 
+                              variant="outline" 
+                              className={getStatusBadgeStyle(report.status)}
+                            >
+                              {report.status.charAt(0).toUpperCase() + report.status.slice(1)}
+                            </Badge>
+                          </TableCell>
+                          <TableCell>{getReasonDisplay(report.reason)}</TableCell>
+                          <TableCell>{report.reportedBy}</TableCell>
+                          <TableCell>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => navigate(`/error-reports/${report.id}`)}
+                            >
+                              View
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              ) : activeTab === "logs" ? (
                 <div className="h-full overflow-y-auto pr-4">
                   {logEntries.map((entry) => (
                     <div key={entry.id} className="p-3 bg-gray-50 rounded-lg">
@@ -353,7 +428,7 @@ const EditItem = () => {
                         { id: "key_os", label: "Key OS", hint: "Operating side key dimensions" },
                         { id: "barrel_rollers_os", label: "Barrel Rollers OS", hint: "Operating side roller conditions" },
                         { id: "inner_race_1", label: "Inner Race 1", hint: "First inner race specifications" },
-                        { id: "inner_race_2", label: "Inner Race 2", hint: "Second inner race specifications" },
+                        { id: "inner_race_2", label: "Inner Race 2", hint: "Second inner_race specifications" },
                         { id: "outer_race_1", label: "Outer Race 1", hint: "First outer race specifications" }
                       ].map((field) => (
                         <div key={field.id} className="space-y-1">
