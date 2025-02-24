@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import Header from "@/components/Header";
 import { Card } from "@/components/ui/card";
@@ -8,32 +9,34 @@ import CreateDeliveryNoteDialog from "@/components/CreateDeliveryNoteDialog";
 
 interface DeliveryNote {
   id: string;
-  date: string;
-  status?: "today" | "tomorrow" | "closed";
-  closedDate?: string;
+  expectedDeliveryDate: string;
+  status: "open" | "closed" | "cancelled";
 }
 
 const deliveryNotes: DeliveryNote[] = [
-  { id: "6547", date: "Today 9:00", status: "today" },
-  { id: "6545", date: "Tomorrow 13:00", status: "tomorrow" },
-  { id: "6545", date: "2025.01.15 - 14:00" },
-  { id: "6544", date: "2025.01.16. - 8:00" },
-  { id: "6546", date: "2025.01.06", status: "closed", closedDate: "2025.01.06" },
-  { id: "6543", date: "2025.01.03", status: "closed", closedDate: "2025.01.03" },
+  { id: "6547", expectedDeliveryDate: "2024.03.15 - 09:00", status: "open" },
+  { id: "6545", expectedDeliveryDate: "2024.03.16 - 13:00", status: "open" },
+  { id: "6544", expectedDeliveryDate: "2024.03.17 - 08:00", status: "open" },
+  { id: "6546", expectedDeliveryDate: "2024.03.10 - 14:00", status: "closed" },
+  { id: "6543", expectedDeliveryDate: "2024.03.08 - 15:00", status: "cancelled" },
 ];
 
 const DeliveryNoteCard = ({ note }: { note: DeliveryNote }) => {
   const getStatusColor = () => {
     switch (note.status) {
-      case "today":
-        return "bg-green-100 text-green-800";
-      case "tomorrow":
+      case "open":
         return "bg-blue-100 text-blue-800";
       case "closed":
+        return "bg-green-100 text-green-800";
+      case "cancelled":
         return "bg-gray-100 text-gray-800";
       default:
         return "bg-gray-50 text-gray-600";
     }
+  };
+
+  const getStatusLabel = (status: string) => {
+    return status.charAt(0).toUpperCase() + status.slice(1);
   };
 
   return (
@@ -44,11 +47,11 @@ const DeliveryNoteCard = ({ note }: { note: DeliveryNote }) => {
             <div className="flex items-center gap-3">
               <span className="text-lg font-semibold">#{note.id}</span>
               <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor()}`}>
-                {note.status || "Scheduled"}
+                {getStatusLabel(note.status)}
               </span>
             </div>
             <p className="text-sm text-gray-600">
-              {note.status === "closed" ? `Closed at ${note.closedDate}` : note.date}
+              Expected Delivery: {note.expectedDeliveryDate}
             </p>
           </div>
           <ChevronRight className="text-gray-400" />
@@ -61,16 +64,13 @@ const DeliveryNoteCard = ({ note }: { note: DeliveryNote }) => {
 const DeliveryNotes = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeFilter, setActiveFilter] = useState("All");
-  const filters = ["All", "Today", "Tomorrow", "Scheduled", "Closed"];
+  const filters = ["All", "Open", "Closed", "Cancelled"];
 
   const filteredNotes = deliveryNotes.filter((note) => {
     const matchesSearch = note.id.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesFilter =
       activeFilter === "All" ||
-      (activeFilter === "Today" && note.status === "today") ||
-      (activeFilter === "Tomorrow" && note.status === "tomorrow") ||
-      (activeFilter === "Closed" && note.status === "closed") ||
-      (activeFilter === "Scheduled" && !note.status);
+      note.status === activeFilter.toLowerCase();
     return matchesSearch && matchesFilter;
   });
 
@@ -95,7 +95,7 @@ const DeliveryNotes = () => {
 
         <div className="space-y-4">
           {filteredNotes.map((note) => (
-            <DeliveryNoteCard key={`${note.id}-${note.date}`} note={note} />
+            <DeliveryNoteCard key={note.id} note={note} />
           ))}
           {filteredNotes.length === 0 && (
             <div className="text-center py-12">
