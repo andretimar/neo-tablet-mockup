@@ -6,6 +6,8 @@ import { ArrowLeft, Upload } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
+
 interface DeliveryItem {
   id: string;
   description: string;
@@ -13,6 +15,7 @@ interface DeliveryItem {
   comment: string;
   process: string;
 }
+
 const availableItems = [{
   id: "6081",
   name: "Item 6081"
@@ -32,49 +35,34 @@ const availableItems = [{
   id: "4051",
   name: "Item 4051"
 }];
+
 const process = "Roll Ø 600 x 450 – flat profile with tungsten carbide coating";
+
 const EditDeliveryNote = () => {
   const navigate = useNavigate();
-  const {
-    id
-  } = useParams();
-  const [items, setItems] = useState<DeliveryItem[]>([{
-    id: "6081",
-    description: "Item 6081",
-    hasError: false,
-    comment: "",
-    process
-  }, {
-    id: "6082",
-    description: "Item 6082",
-    hasError: false,
-    comment: "",
-    process
-  }, {
-    id: "3020",
-    description: "Item 3020",
-    hasError: false,
-    comment: "",
-    process
-  }, {
-    id: "3021",
-    description: "Item 3021",
-    hasError: false,
-    comment: "",
-    process
-  }]);
+  const { id } = useParams();
+  const [isAcceptDialogOpen, setIsAcceptDialogOpen] = useState(false);
+  const [items, setItems] = useState<DeliveryItem[]>([
+    { id: "6081", description: "Item 6081", hasError: false, comment: "", process },
+    { id: "6082", description: "Item 6082", hasError: false, comment: "", process },
+    { id: "3020", description: "Item 3020", hasError: false, comment: "", process },
+    { id: "3021", description: "Item 3021", hasError: false, comment: "", process }
+  ]);
+
   const handleErrorToggle = (itemId: string, checked: boolean) => {
     setItems(items.map(item => item.id === itemId ? {
       ...item,
       hasError: checked
     } : item));
   };
+
   const handleCommentChange = (itemId: string, comment: string) => {
     setItems(items.map(item => item.id === itemId ? {
       ...item,
       comment
     } : item));
   };
+
   const handleItemChange = (currentItemId: string, newItemId: string) => {
     const newItem = availableItems.find(item => item.id === newItemId);
     if (!newItem) return;
@@ -84,10 +72,20 @@ const EditDeliveryNote = () => {
       description: newItem.name
     } : item));
   };
-  return <div className="min-h-screen bg-gray-50">
+
+  const handleAcceptDelivery = () => {
+    setIsAcceptDialogOpen(false);
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50">
       <Header />
       <main className="container max-w-5xl py-8">
-        <Button variant="ghost" className="mb-6" onClick={() => navigate(-1)}>
+        <Button 
+          variant="ghost" 
+          className="mb-6"
+          onClick={() => navigate(-1)}
+        >
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back to Delivery Notes
         </Button>
@@ -193,10 +191,34 @@ const EditDeliveryNote = () => {
 
           <div className="flex justify-end gap-4">
             <Button variant="outline" onClick={() => navigate(-1)}>Cancel</Button>
+            <Button variant="secondary" onClick={() => setIsAcceptDialogOpen(true)}>
+              Accept Delivery
+            </Button>
             <Button>Save Changes</Button>
           </div>
         </Card>
       </main>
-    </div>;
+
+      <Dialog open={isAcceptDialogOpen} onOpenChange={setIsAcceptDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Accept Delivery</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to accept this delivery? This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsAcceptDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleAcceptDelivery}>
+              Confirm
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
 };
+
 export default EditDeliveryNote;
