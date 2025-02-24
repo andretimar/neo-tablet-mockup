@@ -1,29 +1,37 @@
+
 import { Header } from "@/components/Header";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Upload } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface DeliveryItem {
   id: string;
   description: string;
-  quantity: number;
-  receivedQuantity: number;
   hasError: boolean;
   comment: string;
 }
+
+const availableItems = [
+  { id: "1234", name: "Steel Pipe 2inch" },
+  { id: "1235", name: "Copper Wire 12AWG" },
+  { id: "1236", name: "Aluminum Sheet 3mm" },
+  { id: "1237", name: "Brass Fitting 1/2inch" },
+  { id: "1238", name: "Steel Bolt M10" },
+  { id: "1239", name: "Copper Tube 1inch" }
+];
 
 const EditDeliveryNote = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [items, setItems] = useState<DeliveryItem[]>([
-    { id: "1234", description: "Steel Pipe 2inch", quantity: 10, receivedQuantity: 0, hasError: false, comment: "" },
-    { id: "1235", description: "Copper Wire 12AWG", quantity: 50, receivedQuantity: 0, hasError: false, comment: "" },
-    { id: "1236", description: "Aluminum Sheet 3mm", quantity: 20, receivedQuantity: 0, hasError: false, comment: "" },
-    { id: "1237", description: "Brass Fitting 1/2inch", quantity: 30, receivedQuantity: 0, hasError: false, comment: "" }
+    { id: "1234", description: "Steel Pipe 2inch", hasError: false, comment: "" },
+    { id: "1235", description: "Copper Wire 12AWG", hasError: false, comment: "" },
+    { id: "1236", description: "Aluminum Sheet 3mm", hasError: false, comment: "" },
+    { id: "1237", description: "Brass Fitting 1/2inch", hasError: false, comment: "" }
   ]);
 
   const handleErrorToggle = (itemId: string, checked: boolean) => {
@@ -38,9 +46,13 @@ const EditDeliveryNote = () => {
     ));
   };
 
-  const handleReceivedQuantityChange = (itemId: string, value: number) => {
+  const handleItemChange = (itemId: string, newItemId: string) => {
     setItems(items.map(item => 
-      item.id === itemId ? { ...item, receivedQuantity: value } : item
+      item.id === itemId ? { 
+        ...item, 
+        id: newItemId,
+        description: availableItems.find(i => i.id === newItemId)?.name || ""
+      } : item
     ));
   };
 
@@ -92,43 +104,46 @@ const EditDeliveryNote = () => {
                   <div className="space-y-4">
                     <div className="flex items-center justify-between flex-wrap gap-4">
                       <div className="flex-1">
-                        <h3 className="font-medium">Item #{item.id}</h3>
-                        <p className="text-sm text-gray-600">{item.description}</p>
+                        <Select
+                          value={item.id}
+                          onValueChange={(value) => handleItemChange(item.id, value)}
+                        >
+                          <SelectTrigger className="w-[300px]">
+                            <SelectValue placeholder="Select an item" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {availableItems.map((availableItem) => (
+                              <SelectItem key={availableItem.id} value={availableItem.id}>
+                                {availableItem.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                       </div>
-                      <div className="flex items-center gap-6">
-                        <div className="text-sm">
-                          <span className="font-medium">Quantity:</span> {item.quantity}
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <label className="text-sm font-medium">Received:</label>
-                          <Input
-                            type="number"
-                            value={item.receivedQuantity}
-                            onChange={(e) => handleReceivedQuantityChange(item.id, parseInt(e.target.value) || 0)}
-                            className="w-20"
-                            min="0"
-                            max={item.quantity}
-                          />
-                        </div>
-                        <label className="flex items-center gap-2">
-                          <input
-                            type="checkbox"
-                            className="rounded border-gray-300"
-                            checked={item.hasError}
-                            onChange={(e) => handleErrorToggle(item.id, e.target.checked)}
-                          />
-                          <span className="text-sm">Has Error</span>
-                        </label>
-                      </div>
+                      <label className="flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          className="rounded border-gray-300"
+                          checked={item.hasError}
+                          onChange={(e) => handleErrorToggle(item.id, e.target.checked)}
+                        />
+                        <span className="text-sm">Has Error</span>
+                      </label>
                     </div>
                     {item.hasError && (
-                      <div>
+                      <div className="space-y-4">
                         <Textarea
                           placeholder="Add error comment..."
                           value={item.comment}
                           onChange={(e) => handleCommentChange(item.id, e.target.value)}
                           className="w-full"
                         />
+                        <div className="flex items-center gap-2">
+                          <Button variant="outline" className="w-full">
+                            <Upload className="mr-2 h-4 w-4" />
+                            Upload Photos
+                          </Button>
+                        </div>
                       </div>
                     )}
                   </div>
