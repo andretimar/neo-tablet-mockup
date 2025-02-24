@@ -46,14 +46,17 @@ const EditDeliveryNote = () => {
     ));
   };
 
-  const handleItemChange = (itemId: string, newItemId: string) => {
-    setItems(items.map(item => 
-      item.id === itemId ? { 
-        ...item, 
-        id: newItemId,
-        description: availableItems.find(i => i.id === newItemId)?.name || ""
-      } : item
-    ));
+  const handleItemChange = (currentItemId: string, newItemId: string) => {
+    const newItem = availableItems.find(item => item.id === newItemId);
+    if (!newItem) return;
+
+    setItems(prevItems => 
+      prevItems.map(item => 
+        item.id === currentItemId ? 
+        { ...item, id: newItem.id, description: newItem.name } : 
+        item
+      )
+    );
   };
 
   return (
@@ -100,16 +103,18 @@ const EditDeliveryNote = () => {
             <h2 className="text-lg font-semibold text-gray-800 mb-4">Items</h2>
             <div className="space-y-4">
               {items.map((item) => (
-                <Card key={item.id} className="p-4">
+                <Card key={item.id + item.description} className="p-4">
                   <div className="space-y-4">
                     <div className="flex items-center justify-between flex-wrap gap-4">
                       <div className="flex-1">
                         <Select
-                          value={item.id}
+                          defaultValue={item.id}
                           onValueChange={(value) => handleItemChange(item.id, value)}
                         >
                           <SelectTrigger className="w-[300px]">
-                            <SelectValue placeholder="Select an item" />
+                            <SelectValue placeholder="Select an item">
+                              {item.description}
+                            </SelectValue>
                           </SelectTrigger>
                           <SelectContent>
                             {availableItems.map((availableItem) => (
