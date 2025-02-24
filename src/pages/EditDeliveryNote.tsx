@@ -13,25 +13,28 @@ interface DeliveryItem {
   description: string;
   hasError: boolean;
   comment: string;
+  process: string;
 }
 
 const availableItems = [
-  { id: "1234", name: "Steel Pipe 2inch" },
-  { id: "1235", name: "Copper Wire 12AWG" },
-  { id: "1236", name: "Aluminum Sheet 3mm" },
-  { id: "1237", name: "Brass Fitting 1/2inch" },
-  { id: "1238", name: "Steel Bolt M10" },
-  { id: "1239", name: "Copper Tube 1inch" }
+  { id: "6081", name: "Item 6081" },
+  { id: "6082", name: "Item 6082" },
+  { id: "3020", name: "Item 3020" },
+  { id: "3021", name: "Item 3021" },
+  { id: "4050", name: "Item 4050" },
+  { id: "4051", name: "Item 4051" }
 ];
+
+const process = "Roll Ø 600 x 450 – flat profile with tungsten carbide coating";
 
 const EditDeliveryNote = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [items, setItems] = useState<DeliveryItem[]>([
-    { id: "1234", description: "Steel Pipe 2inch", hasError: false, comment: "" },
-    { id: "1235", description: "Copper Wire 12AWG", hasError: false, comment: "" },
-    { id: "1236", description: "Aluminum Sheet 3mm", hasError: false, comment: "" },
-    { id: "1237", description: "Brass Fitting 1/2inch", hasError: false, comment: "" }
+    { id: "6081", description: "Item 6081", hasError: false, comment: "", process },
+    { id: "6082", description: "Item 6082", hasError: false, comment: "", process },
+    { id: "3020", description: "Item 3020", hasError: false, comment: "", process },
+    { id: "3021", description: "Item 3021", hasError: false, comment: "", process }
   ]);
 
   const handleErrorToggle = (itemId: string, checked: boolean) => {
@@ -106,12 +109,12 @@ const EditDeliveryNote = () => {
                 <Card key={item.id + item.description} className="p-4">
                   <div className="space-y-4">
                     <div className="flex items-center justify-between flex-wrap gap-4">
-                      <div className="flex-1">
+                      <div className="flex gap-4 flex-1">
                         <Select
                           defaultValue={item.id}
                           onValueChange={(value) => handleItemChange(item.id, value)}
                         >
-                          <SelectTrigger className="w-[300px]">
+                          <SelectTrigger className="w-[200px]">
                             <SelectValue placeholder="Select an item">
                               {item.description}
                             </SelectValue>
@@ -122,6 +125,19 @@ const EditDeliveryNote = () => {
                                 {availableItem.name}
                               </SelectItem>
                             ))}
+                          </SelectContent>
+                        </Select>
+
+                        <Select value={item.process} disabled>
+                          <SelectTrigger className="w-[400px]">
+                            <SelectValue>
+                              {item.process}
+                            </SelectValue>
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value={process}>
+                              {process}
+                            </SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
