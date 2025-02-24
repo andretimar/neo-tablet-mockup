@@ -14,11 +14,11 @@ interface DeliveryNote {
 }
 
 const deliveryNotes: DeliveryNote[] = [
-  { id: "6547", expectedDeliveryDate: "2024.03.15 - 09:00", status: "open" },
-  { id: "6545", expectedDeliveryDate: "2024.03.16 - 13:00", status: "open" },
-  { id: "6544", expectedDeliveryDate: "2024.03.17 - 08:00", status: "open" },
-  { id: "6546", expectedDeliveryDate: "2024.03.10 - 14:00", status: "closed" },
-  { id: "6543", expectedDeliveryDate: "2024.03.08 - 15:00", status: "cancelled" },
+  { id: "6547", expectedDeliveryDate: "2024.03.15", status: "open" },
+  { id: "6545", expectedDeliveryDate: "2024.03.16", status: "open" },
+  { id: "6544", expectedDeliveryDate: "2024.03.17", status: "open" },
+  { id: "6546", expectedDeliveryDate: "2024.03.10", status: "closed" },
+  { id: "6543", expectedDeliveryDate: "2024.03.08", status: "cancelled" },
 ];
 
 const DeliveryNoteCard = ({ note }: { note: DeliveryNote }) => {
