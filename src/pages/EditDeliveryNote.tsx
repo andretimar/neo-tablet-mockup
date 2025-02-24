@@ -193,7 +193,7 @@ const EditDeliveryNote = () => {
                   id="truckId"
                   className="resize-none"
                   rows={2}
-                  placeholder="Enter truck ID..."
+                  placeholder="Please enter the truck identification number..."
                 />
               </div>
             </div>
