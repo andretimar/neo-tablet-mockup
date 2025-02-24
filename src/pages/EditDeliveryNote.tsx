@@ -174,6 +174,32 @@ const EditDeliveryNote = () => {
           </div>
 
           <div className="mb-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div className="space-y-2">
+                <label className="text-sm font-medium" htmlFor="loadingDate">
+                  Date of Loading
+                </label>
+                <input
+                  type="date"
+                  id="loadingDate"
+                  className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium" htmlFor="truckId">
+                  Truck ID
+                </label>
+                <Textarea
+                  id="truckId"
+                  className="resize-none"
+                  rows={2}
+                  placeholder="Enter truck ID..."
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="mb-8">
             <h2 className="text-lg font-semibold text-gray-800 mb-4">Delivery Comments</h2>
             <Textarea 
               placeholder="Add any additional comments about the delivery..."
