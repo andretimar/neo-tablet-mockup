@@ -40,11 +40,11 @@ const ProcessCard = ({
     switch (approvalStatus) {
       case "full":
         return (
-          <div className="w-5 h-5 rounded-full bg-blue-500" />
+          <div className="w-5 h-5 rounded-full bg-green-500" />
         );
       case "partial":
         return (
-          <div className="w-5 h-5 rounded-full bg-gradient-to-r from-blue-500 from-50% to-gray-200 to-50%" />
+          <div className="w-5 h-5 rounded-full bg-gradient-to-r from-green-500 from-50% to-gray-200 to-50%" />
         );
       case "none":
       default:
