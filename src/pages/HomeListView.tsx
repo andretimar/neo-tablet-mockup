@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ChevronRight, X } from "lucide-react";
+import { ChevronRight, X, Star, AlertOctagon } from "lucide-react";
 import { Link } from "react-router-dom";
 
 interface Item {
@@ -21,6 +21,8 @@ interface Item {
   assignee: string;
   pair?: string;
   qualityApprovals?: number;
+  isPriority?: boolean;
+  hasProblem?: boolean;
 }
 
 const items: Item[] = [
@@ -32,6 +34,7 @@ const items: Item[] = [
     assignee: "John Doe",
     pair: "87603",
     qualityApprovals: 2,
+    isPriority: true
   },
   {
     id: "87603",
@@ -39,7 +42,7 @@ const items: Item[] = [
     process: "Grinding",
     customer: "Customer B",
     assignee: "Jane Smith",
-    qualityApprovals: 1,
+    qualityApprovals: 1
   },
   {
     id: "87604",
@@ -48,6 +51,7 @@ const items: Item[] = [
     customer: "Customer C",
     assignee: "Bob Johnson",
     pair: "87605",
+    hasProblem: true
   },
 ];
 
@@ -97,6 +101,13 @@ const HomeListView = () => {
       default:
         return "bg-white border border-gray-300 text-gray-800";
     }
+  };
+
+  // Get background color based on priority and problem status
+  const getCardBackgroundColor = (item: Item) => {
+    if (item.isPriority) return "bg-[#FEF7CD]"; // Soft yellow for priority items
+    if (item.hasProblem) return "bg-[#FFDEE2]"; // Soft red for items with problems
+    return "bg-white"; // Default background
   };
 
   const filteredItems = items.filter((item) => {
@@ -192,7 +203,7 @@ const HomeListView = () => {
 
         <div className="space-y-4">
           {filteredItems.map((item) => (
-            <Card key={item.id} className="transition-all hover:shadow-md">
+            <Card key={item.id} className={`transition-all hover:shadow-md ${getCardBackgroundColor(item)}`}>
               <Link to={`/edit/${item.id}`}>
                 <div className="flex items-center p-4">
                   <div className="flex-1 space-y-1">
@@ -214,7 +225,11 @@ const HomeListView = () => {
                       {item.pair && ` - Pair: ${item.pair}`}
                     </p>
                   </div>
-                  <ChevronRight className="text-gray-400" />
+                  <div className="flex items-center gap-2">
+                    {item.isPriority && <Star className="w-5 h-5 text-amber-500" />}
+                    {item.hasProblem && <AlertOctagon className="w-5 h-5 text-red-500" />}
+                    <ChevronRight className="text-gray-400" />
+                  </div>
                 </div>
               </Link>
             </Card>
