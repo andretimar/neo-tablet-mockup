@@ -1,6 +1,6 @@
 
 import { useNavigate } from "react-router-dom";
-import { Star, AlertOctagon, Circle } from "lucide-react";
+import { Star, AlertOctagon } from "lucide-react";
 
 interface ProcessCardProps {
   id: string;
@@ -52,9 +52,16 @@ const ProcessCard = ({
     }
   };
 
+  // Determine background color based on priority and problem status
+  const getCardBackgroundColor = () => {
+    if (isPriority) return "bg-[#FEF7CD]"; // Soft yellow for priority items
+    if (hasProblem) return "bg-[#FFDEE2]"; // Soft red for items with problems
+    return "bg-white"; // Default background
+  };
+
   return (
     <div 
-      className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden h-[160px] cursor-pointer relative"
+      className={`${getCardBackgroundColor()} rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden h-[160px] cursor-pointer relative`}
       onClick={() => navigate(`/edit/${id}`)}
     >
       <div className="p-4 h-full flex flex-col">
