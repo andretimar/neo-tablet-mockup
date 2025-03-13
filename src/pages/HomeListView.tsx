@@ -210,6 +210,8 @@ const HomeListView = () => {
                     <div className="flex items-center gap-3">
                       <div className="flex items-center gap-2">
                         <span className="text-lg font-semibold">{item.id}</span>
+                        {item.isPriority && <Star className="w-5 h-5 text-amber-500" />}
+                        {item.hasProblem && <AlertOctagon className="w-5 h-5 text-red-500" />}
                         {renderApprovalIndicator(item.qualityApprovals)}
                       </div>
                       <span
@@ -225,9 +227,7 @@ const HomeListView = () => {
                       {item.pair && ` - Pair: ${item.pair}`}
                     </p>
                   </div>
-                  <div className="flex items-center gap-2">
-                    {item.isPriority && <Star className="w-5 h-5 text-amber-500" />}
-                    {item.hasProblem && <AlertOctagon className="w-5 h-5 text-red-500" />}
+                  <div className="flex items-center">
                     <ChevronRight className="text-gray-400" />
                   </div>
                 </div>
