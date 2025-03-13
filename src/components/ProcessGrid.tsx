@@ -1,7 +1,5 @@
 
-import { useState, useEffect } from "react";
 import ProcessCard from "./ProcessCard";
-import FilterBar from "./FilterBar";
 
 interface ProcessItem {
   id: string;
@@ -38,33 +36,6 @@ type ProcessType = ProcessItem["process"];
 type GroupedData = Record<ProcessType, ProcessItem[]>;
 
 const ProcessGrid = () => {
-  const [filteredInProgress, setFilteredInProgress] = useState(mockData.inProgress);
-  const [filteredWaiting, setFilteredWaiting] = useState(mockData.waiting);
-  const allProcesses = ["Disassembly", "Grinding", "Plating", "Heat Treat", "Assembly"];
-  
-  const handleFilter = (filters: { rollId: string; status: string; customer: string; process: string }) => {
-    const filterItems = (items: ProcessItem[]) => {
-      return items.filter((item) => {
-        const matchesRollId = !filters.rollId || item.id === filters.rollId;
-        
-        const matchesStatus = !filters.status || 
-          (filters.status === "high" && item.isPriority) ||
-          (filters.status === "medium" && !item.isPriority && !item.hasProblem) ||
-          (filters.status === "low" && item.hasProblem);
-        
-        const matchesCustomer = !filters.customer || item.client === filters.customer;
-        const matchesProcess = !filters.process || item.process === filters.process;
-        
-        return matchesRollId && matchesStatus && matchesCustomer && matchesProcess;
-      });
-    };
-    
-    setFilteredInProgress(filterItems(mockData.inProgress));
-    setFilteredWaiting(filterItems(mockData.waiting));
-  };
-  
-  const allItems = [...mockData.inProgress, ...mockData.waiting];
-
   const groupData = (items: ProcessItem[]): GroupedData => {
     return items.reduce((acc, item) => {
       const process = item.process;
@@ -82,42 +53,24 @@ const ProcessGrid = () => {
     showProcessLabels: boolean = true
   ) => {
     const groupedData = groupData(items);
-    
-    // Get all process types that have items after filtering
-    const processTypesWithItems = Object.keys(groupedData) as ProcessType[];
-    
-    if (processTypesWithItems.length === 0) {
-      return (
-        <div className="space-y-3">
-          <h2 className="text-2xl font-bold text-gray-800">{title}</h2>
-          <div className="p-8 text-center text-gray-500">
-            No items match the current filters
-          </div>
-        </div>
-      );
-    }
-    
     return (
       <div className="space-y-3">
         <h2 className="text-2xl font-bold text-gray-800">{title}</h2>
         <div className="grid grid-cols-5 gap-4">
-          {allProcesses.map((process) => (
-            <div key={process} className="space-y-3">
-              {showProcessLabels && (
-                <h3 className="text-lg font-semibold text-gray-700">{process}</h3>
-              )}
-              <div className="space-y-3">
-                {(groupedData[process as ProcessType] || []).map((item) => (
-                  <ProcessCard key={item.id} {...item} />
-                ))}
-                {!groupedData[process as ProcessType] && (
-                  <div className="h-[160px] border border-dashed border-gray-300 rounded-lg flex items-center justify-center text-gray-400">
-                    No items
-                  </div>
+          {(Object.keys(groupedData) as ProcessType[]).map(
+            (process) => (
+              <div key={process} className="space-y-3">
+                {showProcessLabels && (
+                  <h3 className="text-lg font-semibold text-gray-700">{process}</h3>
                 )}
+                <div className="space-y-3">
+                  {groupedData[process].map((item) => (
+                    <ProcessCard key={item.id} {...item} />
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            )
+          )}
         </div>
       </div>
     );
@@ -125,13 +78,9 @@ const ProcessGrid = () => {
 
   return (
     <div className="p-4 space-y-4">
-      <FilterBar 
-        onFilter={handleFilter} 
-        items={allItems} 
-        processes={allProcesses}
-      />
-      {renderSection("In Progress", filteredInProgress, true)}
-      {renderSection("Waiting", filteredWaiting, false)}
+      {renderSection("In Progress", mockData.inProgress, true)}
+      {/* Separator removed as requested */}
+      {renderSection("Waiting", mockData.waiting, false)}
     </div>
   );
 };

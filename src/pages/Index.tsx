@@ -12,7 +12,8 @@ const Index = () => {
       <WarningBanner />
       <Header />
       <div className="container max-w-7xl py-4">
-        <div className="flex justify-end mb-4">
+        <ProcessGrid />
+        <div className="flex justify-center mt-8">
           <Link to="/home-list-view">
             <Button variant="outline" className="gap-2">
               <List className="h-4 w-4" />
@@ -20,7 +21,6 @@ const Index = () => {
             </Button>
           </Link>
         </div>
-        <ProcessGrid />
       </div>
     </div>
   );

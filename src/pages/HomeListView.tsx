@@ -3,9 +3,15 @@ import { useState } from "react";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ChevronRight, Grid } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { ChevronRight, X } from "lucide-react";
 import { Link } from "react-router-dom";
-import FilterBar from "@/components/FilterBar";
 
 interface Item {
   id: string;
@@ -14,7 +20,6 @@ interface Item {
   assignee: string;
   pair?: string;
   qualityApprovals?: number;
-  process: string;
 }
 
 const items: Item[] = [
@@ -25,7 +30,6 @@ const items: Item[] = [
     assignee: "John Doe",
     pair: "87603",
     qualityApprovals: 2,
-    process: "Disassembly"
   },
   {
     id: "87603",
@@ -33,7 +37,6 @@ const items: Item[] = [
     customer: "Customer B",
     assignee: "Jane Smith",
     qualityApprovals: 1,
-    process: "Grinding"
   },
   {
     id: "87604",
@@ -41,25 +44,22 @@ const items: Item[] = [
     customer: "Customer C",
     assignee: "Bob Johnson",
     pair: "87605",
-    process: "Plating"
   },
 ];
 
 const HomeListView = () => {
-  const [filteredItems, setFilteredItems] = useState(items);
-  const processes = ["Disassembly", "Grinding", "Plating", "Heat Treat", "Assembly"];
+  const [filters, setFilters] = useState({
+    rollId: "",
+    status: "",
+    customer: "",
+  });
 
-  const handleFilter = (filters: { rollId: string; status: string; customer: string; process: string }) => {
-    const filtered = items.filter((item) => {
-      const matchesRollId = !filters.rollId || item.id === filters.rollId;
-      const matchesStatus = !filters.status || item.status === filters.status;
-      const matchesCustomer = !filters.customer || item.customer === filters.customer;
-      const matchesProcess = !filters.process || item.process === filters.process;
-      
-      return matchesRollId && matchesStatus && matchesCustomer && matchesProcess;
+  const clearFilters = () => {
+    setFilters({
+      rollId: "",
+      status: "",
+      customer: "",
     });
-    
-    setFilteredItems(filtered);
   };
 
   const getStatusColor = (status: string) => {
@@ -75,6 +75,14 @@ const HomeListView = () => {
     }
   };
 
+  const filteredItems = items.filter((item) => {
+    return (
+      (!filters.rollId || item.id === filters.rollId) &&
+      (!filters.status || item.status === filters.status) &&
+      (!filters.customer || item.customer === filters.customer)
+    );
+  });
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
@@ -84,19 +92,70 @@ const HomeListView = () => {
           <p className="text-gray-600">View all items in a list format</p>
         </div>
 
-        <FilterBar 
-          onFilter={handleFilter} 
-          items={items} 
-          processes={processes}
-        />
+        <div className="flex gap-4 mb-6 items-center">
+          <div className="flex-1 grid grid-cols-3 gap-4">
+            <Select
+              value={filters.rollId}
+              onValueChange={(value) =>
+                setFilters({ ...filters, rollId: value })
+              }
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select Roll ID" />
+              </SelectTrigger>
+              <SelectContent>
+                {items.map((item) => (
+                  <SelectItem key={item.id} value={item.id}>
+                    {item.id}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
 
-        <div className="flex justify-end mb-4">
-          <Link to="/">
-            <Button variant="outline" className="gap-2">
-              <Grid className="h-4 w-4" />
-              Grid View
-            </Button>
-          </Link>
+            <Select
+              value={filters.status}
+              onValueChange={(value) =>
+                setFilters({ ...filters, status: value })
+              }
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select Status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="high">High Priority</SelectItem>
+                <SelectItem value="medium">Medium Priority</SelectItem>
+                <SelectItem value="low">Low Priority</SelectItem>
+              </SelectContent>
+            </Select>
+
+            <Select
+              value={filters.customer}
+              onValueChange={(value) =>
+                setFilters({ ...filters, customer: value })
+              }
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select Customer" />
+              </SelectTrigger>
+              <SelectContent>
+                {Array.from(new Set(items.map((item) => item.customer))).map(
+                  (customer) => (
+                    <SelectItem key={customer} value={customer}>
+                      {customer}
+                    </SelectItem>
+                  )
+                )}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={clearFilters}
+          >
+            <X className="h-4 w-4" />
+          </Button>
         </div>
 
         <style>
@@ -139,9 +198,6 @@ const HomeListView = () => {
                     <p className="text-sm text-gray-600">
                       {item.customer} - Assigned to {item.assignee}
                       {item.pair && ` - Pair: ${item.pair}`}
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      Process: {item.process}
                     </p>
                   </div>
                   <ChevronRight className="text-gray-400" />
