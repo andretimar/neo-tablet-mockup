@@ -1,6 +1,6 @@
 
 import { useNavigate } from "react-router-dom";
-import { Star, AlertOctagon, Circle, CircleCheck, CircleDashed } from "lucide-react";
+import { Star, AlertOctagon, Circle } from "lucide-react";
 
 interface ProcessCardProps {
   id: string;
@@ -39,12 +39,16 @@ const ProcessCard = ({
   const renderApprovalIcon = () => {
     switch (approvalStatus) {
       case "full":
-        return <CircleCheck className="w-5 h-5 text-green-500" />;
+        return (
+          <div className="w-5 h-5 rounded-full bg-blue-500" />
+        );
       case "partial":
-        return <CircleDashed className="w-5 h-5 text-amber-500" />;
+        return (
+          <div className="w-5 h-5 rounded-full bg-gradient-to-r from-blue-500 from-50% to-gray-200 to-50%" />
+        );
       case "none":
       default:
-        return <Circle className="w-5 h-5 text-gray-300" />;
+        return null;
     }
   };
 
@@ -56,7 +60,6 @@ const ProcessCard = ({
       <div className="p-4 h-full flex flex-col">
         <div className="flex items-center justify-between mb-3">
           <span className="text-2xl font-bold text-gray-800">{id}</span>
-          {/* Status chip removed as requested */}
         </div>
         <div className="space-y-2 flex-grow">
           <div className="text-sm text-gray-600">
@@ -71,7 +74,6 @@ const ProcessCard = ({
         <div className="absolute bottom-0 left-0 right-0 p-3 bg-white bg-opacity-90">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              {/* Removed the circular image as requested */}
               <span className="text-sm text-gray-600">{assignee?.name || "Unassigned"}</span>
             </div>
             <div className="flex items-center gap-2">
