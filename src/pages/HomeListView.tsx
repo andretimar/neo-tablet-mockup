@@ -16,6 +16,7 @@ import { Link } from "react-router-dom";
 interface Item {
   id: string;
   status: "high" | "medium" | "low";
+  process: "Disassembly" | "Grinding" | "Plating" | "Heat Treat" | "Assembly";
   customer: string;
   assignee: string;
   pair?: string;
@@ -26,6 +27,7 @@ const items: Item[] = [
   {
     id: "87602",
     status: "high",
+    process: "Disassembly",
     customer: "Customer A",
     assignee: "John Doe",
     pair: "87603",
@@ -34,6 +36,7 @@ const items: Item[] = [
   {
     id: "87603",
     status: "medium",
+    process: "Grinding",
     customer: "Customer B",
     assignee: "Jane Smith",
     qualityApprovals: 1,
@@ -41,6 +44,7 @@ const items: Item[] = [
   {
     id: "87604",
     status: "low",
+    process: "Plating",
     customer: "Customer C",
     assignee: "Bob Johnson",
     pair: "87605",
@@ -62,16 +66,36 @@ const HomeListView = () => {
     });
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "high":
-        return "bg-amber-100 text-amber-800";
-      case "medium":
-        return "bg-blue-100 text-blue-800";
-      case "low":
-        return "bg-green-100 text-green-800";
+  const renderApprovalIndicator = (approvals?: number) => {
+    if (!approvals) return null;
+    
+    return (
+      <div className="relative w-4 h-4">
+        <div className="absolute inset-0 rounded-full border-2 border-green-500">
+          <div 
+            className={`absolute inset-0 bg-green-500 rounded-full ${
+              approvals === 1 ? 'clip-path-half' : ''
+            }`}
+          />
+        </div>
+      </div>
+    );
+  };
+
+  const getProcessChipColor = (process: string) => {
+    switch (process) {
+      case "Disassembly":
+        return "bg-white border border-gray-300 text-gray-800";
+      case "Grinding":
+        return "bg-white border border-gray-300 text-gray-800";
+      case "Plating":
+        return "bg-white border border-gray-300 text-gray-800";
+      case "Heat Treat":
+        return "bg-white border border-gray-300 text-gray-800";
+      case "Assembly":
+        return "bg-white border border-gray-300 text-gray-800";
       default:
-        return "bg-gray-100 text-gray-800";
+        return "bg-white border border-gray-300 text-gray-800";
     }
   };
 
@@ -175,24 +199,14 @@ const HomeListView = () => {
                     <div className="flex items-center gap-3">
                       <div className="flex items-center gap-2">
                         <span className="text-lg font-semibold">{item.id}</span>
-                        {(item.qualityApprovals ?? 0) > 0 && (
-                          <div className="relative w-4 h-4">
-                            <div className="absolute inset-0 rounded-full border-2 border-green-500">
-                              <div 
-                                className={`absolute inset-0 bg-green-500 rounded-full ${
-                                  (item.qualityApprovals === 1) ? 'clip-path-half' : ''
-                                }`}
-                              />
-                            </div>
-                          </div>
-                        )}
+                        {renderApprovalIndicator(item.qualityApprovals)}
                       </div>
                       <span
-                        className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(
-                          item.status
+                        className={`px-2 py-1 rounded-full text-xs font-medium ${getProcessChipColor(
+                          item.process
                         )}`}
                       >
-                        {item.status}
+                        {item.process}
                       </span>
                     </div>
                     <p className="text-sm text-gray-600">
