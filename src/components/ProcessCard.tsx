@@ -1,5 +1,6 @@
+
 import { useNavigate } from "react-router-dom";
-import { Star, AlertOctagon } from "lucide-react";
+import { Star, AlertOctagon, Circle, CircleCheck, CircleDashed } from "lucide-react";
 
 interface ProcessCardProps {
   id: string;
@@ -12,6 +13,7 @@ interface ProcessCardProps {
   };
   isPriority?: boolean;
   hasProblem?: boolean;
+  approvalStatus?: "none" | "partial" | "full";
 }
 
 const processColors = {
@@ -22,8 +24,29 @@ const processColors = {
   Assembly: "bg-neo-process-assembly",
 };
 
-const ProcessCard = ({ id, process, client, pair, assignee, isPriority, hasProblem }: ProcessCardProps) => {
+const ProcessCard = ({ 
+  id, 
+  process, 
+  client, 
+  pair, 
+  assignee, 
+  isPriority, 
+  hasProblem, 
+  approvalStatus = "none" 
+}: ProcessCardProps) => {
   const navigate = useNavigate();
+
+  const renderApprovalIcon = () => {
+    switch (approvalStatus) {
+      case "full":
+        return <CircleCheck className="w-5 h-5 text-green-500" />;
+      case "partial":
+        return <CircleDashed className="w-5 h-5 text-amber-500" />;
+      case "none":
+      default:
+        return <Circle className="w-5 h-5 text-gray-300" />;
+    }
+  };
 
   return (
     <div 
@@ -33,9 +56,7 @@ const ProcessCard = ({ id, process, client, pair, assignee, isPriority, hasProbl
       <div className="p-4 h-full flex flex-col">
         <div className="flex items-center justify-between mb-3">
           <span className="text-2xl font-bold text-gray-800">{id}</span>
-          <span className={`${processColors[process]} px-3 py-1 rounded-full text-sm font-medium ml-2`}>
-            {process}
-          </span>
+          {/* Status chip removed as requested */}
         </div>
         <div className="space-y-2 flex-grow">
           <div className="text-sm text-gray-600">
@@ -50,16 +71,13 @@ const ProcessCard = ({ id, process, client, pair, assignee, isPriority, hasProbl
         <div className="absolute bottom-0 left-0 right-0 p-3 bg-white bg-opacity-90">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <img
-                src={assignee?.image || "/placeholder.svg"}
-                alt={assignee?.name || "Unassigned"}
-                className="w-6 h-6 rounded-full mr-2"
-              />
+              {/* Removed the circular image as requested */}
               <span className="text-sm text-gray-600">{assignee?.name || "Unassigned"}</span>
             </div>
             <div className="flex items-center gap-2">
               {isPriority && <Star className="w-5 h-5 text-amber-500" />}
               {hasProblem && <AlertOctagon className="w-5 h-5 text-red-500" />}
+              {renderApprovalIcon()}
             </div>
           </div>
         </div>

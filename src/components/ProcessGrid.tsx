@@ -1,5 +1,5 @@
+
 import ProcessCard from "./ProcessCard";
-import { Separator } from "./ui/separator";
 
 interface ProcessItem {
   id: string;
@@ -12,22 +12,23 @@ interface ProcessItem {
   };
   isPriority?: boolean;
   hasProblem?: boolean;
+  approvalStatus?: "none" | "partial" | "full";
 }
 
 const mockData = {
   inProgress: [
-    { id: "87602", process: "Disassembly", client: "Samsung", assignee: { name: "John Doe", image: "/placeholder.svg" }, isPriority: true },
-    { id: "75036", process: "Grinding", client: "Samsung", pair: "75037", assignee: { name: "Jane Smith", image: "/placeholder.svg" } },
-    { id: "4065", process: "Plating", client: "SKBM", assignee: { name: "Mike Johnson", image: "/placeholder.svg" }, hasProblem: true },
-    { id: "12679", process: "Heat Treat", client: "SKOM", pair: "12680", assignee: { name: "Sarah Wilson", image: "/placeholder.svg" } },
-    { id: "3340", process: "Assembly", client: "Samsung", pair: "3341", assignee: { name: "Tom Brown", image: "/placeholder.svg" } },
+    { id: "87602", process: "Disassembly", client: "Samsung", assignee: { name: "John Doe", image: "/placeholder.svg" }, isPriority: true, approvalStatus: "full" },
+    { id: "75036", process: "Grinding", client: "Samsung", pair: "75037", assignee: { name: "Jane Smith", image: "/placeholder.svg" }, approvalStatus: "partial" },
+    { id: "4065", process: "Plating", client: "SKBM", assignee: { name: "Mike Johnson", image: "/placeholder.svg" }, hasProblem: true, approvalStatus: "none" },
+    { id: "12679", process: "Heat Treat", client: "SKOM", pair: "12680", assignee: { name: "Sarah Wilson", image: "/placeholder.svg" }, approvalStatus: "partial" },
+    { id: "3340", process: "Assembly", client: "Samsung", pair: "3341", assignee: { name: "Tom Brown", image: "/placeholder.svg" }, approvalStatus: "full" },
   ] as ProcessItem[],
   waiting: [
-    { id: "87603", process: "Disassembly", client: "LG", assignee: { name: "Alex Lee", image: "/placeholder.svg" } },
-    { id: "75038", process: "Grinding", client: "SKBM", pair: "75039", assignee: { name: "Emma Davis", image: "/placeholder.svg" } },
-    { id: "4066", process: "Plating", client: "Samsung", assignee: { name: "Chris Park", image: "/placeholder.svg" } },
-    { id: "12681", process: "Heat Treat", client: "LG", pair: "12682", assignee: { name: "Lisa Chen", image: "/placeholder.svg" } },
-    { id: "3342", process: "Assembly", client: "SKOM", pair: "3343", assignee: { name: "David Kim", image: "/placeholder.svg" } },
+    { id: "87603", process: "Disassembly", client: "LG", assignee: { name: "Alex Lee", image: "/placeholder.svg" }, approvalStatus: "none" },
+    { id: "75038", process: "Grinding", client: "SKBM", pair: "75039", assignee: { name: "Emma Davis", image: "/placeholder.svg" }, approvalStatus: "partial" },
+    { id: "4066", process: "Plating", client: "Samsung", assignee: { name: "Chris Park", image: "/placeholder.svg" }, approvalStatus: "none" },
+    { id: "12681", process: "Heat Treat", client: "LG", pair: "12682", assignee: { name: "Lisa Chen", image: "/placeholder.svg" }, approvalStatus: "partial" },
+    { id: "3342", process: "Assembly", client: "SKOM", pair: "3343", assignee: { name: "David Kim", image: "/placeholder.svg" }, approvalStatus: "full" },
   ] as ProcessItem[],
 };
 
@@ -78,7 +79,7 @@ const ProcessGrid = () => {
   return (
     <div className="p-4 space-y-4">
       {renderSection("In Progress", mockData.inProgress, true)}
-      <Separator className="my-4" />
+      {/* Separator removed as requested */}
       {renderSection("Waiting", mockData.waiting, false)}
     </div>
   );
