@@ -107,31 +107,20 @@ const EditDeliveryNote = () => {
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
             <div className="space-y-6">
-              <h2 className="text-lg font-semibold text-gray-800">Seller Information</h2>
+              <h2 className="text-lg font-semibold text-gray-800">Customer Information</h2>
               <div className="space-y-2">
-                <p className="text-gray-600"><span className="font-medium">Company Name:</span> Neo Industries GmbH</p>
-                <p className="text-gray-600"><span className="font-medium">Company Address:</span> 123 Industrial Park, Manufacturing City, MC 12345</p>
+                <p className="text-gray-600"><span className="font-medium">Customer:</span> Neo Industries GmbH</p>
                 <p className="text-gray-600"><span className="font-medium">Contact:</span> John Smith</p>
                 <p className="text-gray-600"><span className="font-medium">Phone:</span> +1 234 567 890</p>
               </div>
             </div>
 
             <div className="space-y-6">
-              <h2 className="text-lg font-semibold text-gray-800">Buyer Information</h2>
+              <h2 className="text-lg font-semibold text-gray-800">Delivery Information</h2>
               <div className="space-y-2">
-                <p className="text-gray-600"><span className="font-medium">Company Name:</span> Acme Corp</p>
-                <p className="text-gray-600"><span className="font-medium">Company Address:</span> 456 Business Avenue, Enterprise City, EC 67890</p>
-                <p className="text-gray-600"><span className="font-medium">Contact:</span> Jane Doe</p>
-                <p className="text-gray-600"><span className="font-medium">Phone:</span> +1 987 654 321</p>
+                <p className="text-gray-600"><span className="font-medium">Date:</span> 2024.03.15</p>
+                <p className="text-gray-600"><span className="font-medium">Address:</span> 123 Industrial Park, Manufacturing City, MC 12345</p>
               </div>
-            </div>
-          </div>
-
-          <div className="space-y-6 mb-8">
-            <h2 className="text-lg font-semibold text-gray-800">Delivery Information</h2>
-            <div className="space-y-2">
-              <p className="text-gray-600"><span className="font-medium">Date:</span> 2024.03.15</p>
-              <p className="text-gray-600"><span className="font-medium">Address:</span> 123 Industrial Park, Manufacturing City, MC 12345</p>
             </div>
           </div>
 
