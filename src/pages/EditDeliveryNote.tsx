@@ -2,7 +2,7 @@ import { Header } from "@/components/Header";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowLeft, Upload } from "lucide-react";
+import { ArrowLeft, Upload, Printer } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -81,14 +81,23 @@ const EditDeliveryNote = () => {
     <div className="min-h-screen bg-gray-50">
       <Header />
       <main className="container max-w-5xl py-8">
-        <Button 
-          variant="ghost" 
-          className="mb-6"
-          onClick={() => navigate(-1)}
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Delivery Notes
-        </Button>
+        <div className="flex justify-between items-center mb-6">
+          <Button 
+            variant="ghost"
+            onClick={() => navigate(-1)}
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to Delivery Notes
+          </Button>
+          <Button 
+            variant="outline"
+            className="bg-white text-gray-800 border-gray-300 hover:bg-gray-100"
+            onClick={() => window.print()}
+          >
+            <Printer className="mr-2 h-4 w-4" />
+            Print
+          </Button>
+        </div>
         
         <Card className="p-8">
           <div className="flex items-center justify-between mb-8">
