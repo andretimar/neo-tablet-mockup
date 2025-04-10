@@ -27,6 +27,7 @@ const processColors = {
 const ProcessCard = ({ 
   id, 
   process, 
+  client, 
   pair, 
   assignee, 
   isPriority, 
@@ -60,30 +61,31 @@ const ProcessCard = ({
 
   return (
     <div 
-      className={`${getCardBackgroundColor()} rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden h-[120px] cursor-pointer relative`}
+      className={`${getCardBackgroundColor()} rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden h-[160px] cursor-pointer relative`}
       onClick={() => navigate(`/edit/${id}`)}
     >
-      <div className="p-3 h-full flex flex-col">
-        <div className="flex items-center justify-between mb-2">
-          <div className="flex items-center gap-2">
-            <span className="text-xl font-bold text-gray-800">{id}</span>
-            {isPriority && <Star className="w-4 h-4 text-amber-500" />}
-            {hasProblem && <AlertOctagon className="w-4 h-4 text-red-500" />}
-          </div>
+      <div className="p-4 h-full flex flex-col">
+        <div className="flex items-center justify-between mb-3">
+          <span className="text-2xl font-bold text-gray-800">{id}</span>
         </div>
-        <div className="space-y-1 flex-grow">
+        <div className="space-y-2 flex-grow">
+          <div className="text-sm text-gray-600">
+            Client: <span className="font-medium text-gray-800">{client}</span>
+          </div>
           {pair && (
-            <div className="text-xs text-gray-600">
+            <div className="text-sm text-gray-600">
               Pair: <span className="font-medium text-gray-800">{pair}</span>
             </div>
           )}
         </div>
-        <div className="absolute bottom-0 left-0 right-0 p-2 bg-white bg-opacity-90">
+        <div className="absolute bottom-0 left-0 right-0 p-3 bg-white bg-opacity-90">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <span className="text-xs text-gray-600">{assignee?.name || "Unassigned"}</span>
+              <span className="text-sm text-gray-600">{assignee?.name || "Unassigned"}</span>
             </div>
             <div className="flex items-center gap-2">
+              {isPriority && <Star className="w-5 h-5 text-amber-500" />}
+              {hasProblem && <AlertOctagon className="w-5 h-5 text-red-500" />}
               {renderApprovalIcon()}
             </div>
           </div>

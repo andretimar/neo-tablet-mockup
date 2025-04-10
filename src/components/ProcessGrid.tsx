@@ -1,6 +1,5 @@
 
 import ProcessCard from "./ProcessCard";
-import PlaceholderCard from "./PlaceholderCard";
 
 interface ProcessItem {
   id: string;
@@ -36,8 +35,6 @@ const mockData = {
 type ProcessType = ProcessItem["process"];
 type GroupedData = Record<ProcessType, ProcessItem[]>;
 
-const allProcessTypes: ProcessType[] = ["Disassembly", "Grinding", "Plating", "Heat Treat", "Assembly"];
-
 const ProcessGrid = () => {
   const groupData = (items: ProcessItem[]): GroupedData => {
     return items.reduce((acc, item) => {
@@ -56,27 +53,24 @@ const ProcessGrid = () => {
     showProcessLabels: boolean = true
   ) => {
     const groupedData = groupData(items);
-    
     return (
       <div className="space-y-3">
         <h2 className="text-2xl font-bold text-gray-800">{title}</h2>
         <div className="grid grid-cols-5 gap-4">
-          {allProcessTypes.map((process) => (
-            <div key={process} className="space-y-3">
-              {showProcessLabels && (
-                <h3 className="text-lg font-semibold text-gray-700">{process}</h3>
-              )}
-              <div className="space-y-3">
-                {groupedData[process]?.length > 0 ? (
-                  groupedData[process].map((item) => (
-                    <ProcessCard key={item.id} {...item} />
-                  ))
-                ) : (
-                  <PlaceholderCard processType={process} />
+          {(Object.keys(groupedData) as ProcessType[]).map(
+            (process) => (
+              <div key={process} className="space-y-3">
+                {showProcessLabels && (
+                  <h3 className="text-lg font-semibold text-gray-700">{process}</h3>
                 )}
+                <div className="space-y-3">
+                  {groupedData[process].map((item) => (
+                    <ProcessCard key={item.id} {...item} />
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            )
+          )}
         </div>
       </div>
     );
