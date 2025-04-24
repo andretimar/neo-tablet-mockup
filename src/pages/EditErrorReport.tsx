@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
@@ -243,16 +242,18 @@ const EditErrorReport = () => {
                       {existingAttachments.map((attachment, index) => (
                         <div
                           key={index}
-                          className="relative aspect-square bg-gray-100 rounded"
+                          className="space-y-2"
                         >
-                          <img
-                            src="/placeholder.svg"
-                            alt={`Attachment ${index + 1}`}
-                            className="w-full h-full object-cover rounded"
-                          />
+                          <div className="aspect-square bg-gray-100 rounded">
+                            <img
+                              src="/placeholder.svg"
+                              alt={`Attachment ${index + 1}`}
+                              className="w-full h-full object-cover rounded"
+                            />
+                          </div>
                           <button
                             type="button"
-                            className="absolute bottom-2 left-1/2 transform -translate-x-1/2 text-red-600 hover:underline"
+                            className="w-full text-red-600 hover:underline text-center"
                             onClick={() => handleDeleteAttachment(attachment)}
                           >
                             Delete
@@ -283,4 +284,3 @@ const EditErrorReport = () => {
 };
 
 export default EditErrorReport;
-
