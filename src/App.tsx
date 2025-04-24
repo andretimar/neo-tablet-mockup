@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -10,6 +11,7 @@ import EditItem from "./pages/EditItem";
 import ErrorReports from "./pages/ErrorReports";
 import CreateErrorReport from "./pages/CreateErrorReport";
 import ViewErrorReport from "./pages/ViewErrorReport";
+import EditErrorReport from "./pages/EditErrorReport";
 import Index from "./pages/Index";
 import HomeListView from "./pages/HomeListView";
 import Inventory from "./pages/Inventory";
