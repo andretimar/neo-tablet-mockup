@@ -21,7 +21,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { Input } from "@/components/ui/input";
-import { FileX, Trash2 } from "lucide-react";
 
 interface ErrorReportForm {
   rollId: string;
@@ -63,7 +62,7 @@ const EditErrorReport = () => {
     "End Cover",
     "Thrust Bearing",
   ]);
-  const [existingAttachments] = useState([
+  const [existingAttachments, setExistingAttachments] = useState([
     "attachment1.jpg",
     "attachment2.jpg",
     "attachment3.jpg",
@@ -92,7 +91,9 @@ const EditErrorReport = () => {
   };
 
   const handleDeleteAttachment = (attachmentName: string) => {
-    console.log("Delete attachment:", attachmentName);
+    setExistingAttachments((prev) => 
+      prev.filter((attachment) => attachment !== attachmentName)
+    );
   };
 
   return (
@@ -242,21 +243,20 @@ const EditErrorReport = () => {
                       {existingAttachments.map((attachment, index) => (
                         <div
                           key={index}
-                          className="relative aspect-square bg-gray-100 rounded group"
+                          className="relative aspect-square bg-gray-100 rounded"
                         >
                           <img
                             src="/placeholder.svg"
                             alt={`Attachment ${index + 1}`}
                             className="w-full h-full object-cover rounded"
                           />
-                          <Button
-                            variant="destructive"
-                            size="icon"
-                            className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                          <button
+                            type="button"
+                            className="absolute bottom-2 left-1/2 transform -translate-x-1/2 text-red-600 hover:underline"
                             onClick={() => handleDeleteAttachment(attachment)}
                           >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
+                            Delete
+                          </button>
                         </div>
                       ))}
                     </div>
