@@ -60,7 +60,9 @@ const ViewErrorReport = () => {
       <main className="container max-w-5xl py-8">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold">Error Report #{id}</h1>
-          <Button variant="outline">Edit Report</Button>
+          <Link to={`/error-reports/${id}/edit`}>
+            <Button variant="outline">Edit Report</Button>
+          </Link>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Card>

@@ -36,6 +36,7 @@ const App = () => (
           <Route path="/error-reports" element={<ErrorReports />} />
           <Route path="/error-reports/new" element={<CreateErrorReport />} />
           <Route path="/error-reports/:id" element={<ViewErrorReport />} />
+          <Route path="/error-reports/:id/edit" element={<EditErrorReport />} />
           <Route path="/inventory" element={<Inventory />} />
           <Route path="/inventory/:id" element={<InventoryDetails />} />
           <Route path="/edit/:id" element={<EditItem />} />
