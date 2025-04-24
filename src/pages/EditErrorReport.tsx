@@ -23,6 +23,8 @@ import { Input } from "@/components/ui/input";
 
 interface ErrorReportForm {
   rollId: string;
+  jobId: string;
+  reportedBy: string;
   status: string;
   reason: string;
   comments: string;
@@ -49,6 +51,8 @@ const EditErrorReport = () => {
   const form = useForm<ErrorReportForm>({
     defaultValues: {
       rollId: "87602",
+      jobId: "JB-1001",
+      reportedBy: "John Smith",
       status: "open",
       reason: "operator_error",
       comments: "Machine malfunction during processing phase",
@@ -128,6 +132,55 @@ const EditErrorReport = () => {
                         <SelectItem value="87602">87602</SelectItem>
                         <SelectItem value="87603">87603</SelectItem>
                         <SelectItem value="87604">87604</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="jobId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Job ID</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Job ID" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="JB-1001">JB-1001</SelectItem>
+                        <SelectItem value="JB-1002">JB-1002</SelectItem>
+                        <SelectItem value="JB-1003">JB-1003</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="reportedBy"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Reported By</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      disabled
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select reporter" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="John Smith">John Smith</SelectItem>
                       </SelectContent>
                     </Select>
                   </FormItem>
