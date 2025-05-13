@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { FileUp, AlertCircle, CheckCircle, History, Link as LinkIcon, Clock, FileText, Info, File, Wrench } from "lucide-react";
+import { FileUp, AlertCircle, CheckCircle, History, Link as LinkIcon, Clock, FileText, Info, File, Wrench, Upload } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Tooltip,
@@ -23,6 +23,13 @@ const EditItem = () => {
   const [showReportMenu, setShowReportMenu] = useState(false);
   const [isTopPriority, setIsTopPriority] = useState(false);
   const [activeTab, setActiveTab] = useState("general");
+  const [files, setFiles] = useState<File[]>([]);
+  // Sample placeholder images for demo purposes, same as in CreateErrorReport
+  const [placeholderImages] = useState([
+    "/placeholder.svg",
+    "/placeholder.svg",
+    "/placeholder.svg",
+  ]);
 
   const quickReports = [
     "Damaged during process",
@@ -163,6 +170,28 @@ const EditItem = () => {
     }
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setFiles(Array.from(e.target.files));
+    }
+  };
+
+  const handleUploadClick = () => {
+    // Create a hidden file input and trigger it
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.multiple = true;
+    fileInput.accept = "image/*";
+    
+    fileInput.onchange = (e) => {
+      // Properly cast the event to the right type
+      const inputEvent = e as unknown as React.ChangeEvent<HTMLInputElement>;
+      handleFileChange(inputEvent);
+    };
+    
+    fileInput.click();
+  };
+
   return (
     <div className="min-h-screen bg-gray-100">
       <Header />
@@ -195,6 +224,19 @@ const EditItem = () => {
               <div className="text-xl font-semibold">JB-1001</div>
             </div>
             <div className="space-x-4">
+              <Button variant="outline" onClick={handleUploadClick}>
+                <Upload className="mr-2 h-4 w-4" />
+                Upload Photo
+              </Button>
+              <Input
+                type="file"
+                className="hidden"
+                multiple
+                accept="image/*"
+                onChange={(e) => {
+                  handleFileChange(e);
+                }}
+              />
               <Button variant="outline" onClick={() => document.getElementById('file-input')?.click()}>
                 <FileUp className="mr-2 h-4 w-4" />
                 <input
@@ -586,8 +628,22 @@ const EditItem = () => {
                   <div className="mb-8">
                     <Label className="mb-3 block">Attached photos</Label>
                     <div className="grid grid-cols-4 gap-4">
-                      {[1, 2, 3, 4].map((i) => (
-                        <div key={i} className="aspect-square bg-gray-200 rounded-lg"></div>
+                      {placeholderImages.map((img, index) => (
+                        <div key={index} className="space-y-1">
+                          <div className="relative aspect-square bg-gray-100 rounded overflow-hidden">
+                            <img
+                              src={img}
+                              alt={`Attachment ${index + 1}`}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                          <button
+                            type="button"
+                            className="w-full text-red-600 hover:underline text-center text-sm"
+                          >
+                            Delete
+                          </button>
+                        </div>
                       ))}
                     </div>
                   </div>
