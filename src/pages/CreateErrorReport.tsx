@@ -80,7 +80,9 @@ const CreateErrorReport = () => {
     fileInput.accept = "image/*";
     
     fileInput.onchange = (e) => {
-      handleFileChange(e as React.ChangeEvent<HTMLInputElement>);
+      // Fix: properly cast the event to the right type
+      const inputEvent = e as unknown as React.ChangeEvent<HTMLInputElement>;
+      handleFileChange(inputEvent);
     };
     
     fileInput.click();
