@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
@@ -20,6 +21,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { Input } from "@/components/ui/input";
+import { Upload } from "lucide-react";
 
 interface ErrorReportForm {
   rollId: string;
@@ -71,6 +73,12 @@ const EditErrorReport = () => {
     "attachment3.jpg",
     "attachment4.jpg",
   ]);
+  // Sample placeholder images for demo purposes, just like in CreateErrorReport
+  const [placeholderImages] = useState([
+    "/placeholder.svg",
+    "/placeholder.svg",
+    "/placeholder.svg",
+  ]);
 
   const onSubmit = (data: ErrorReportForm) => {
     const formData = {
@@ -85,6 +93,22 @@ const EditErrorReport = () => {
     if (e.target.files) {
       setFiles(Array.from(e.target.files));
     }
+  };
+
+  const handleUploadClick = () => {
+    // Create a hidden file input and trigger it
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.multiple = true;
+    fileInput.accept = "image/*";
+    
+    fileInput.onchange = (e) => {
+      // Fix: properly cast the event to the right type
+      const inputEvent = e as unknown as React.ChangeEvent<HTMLInputElement>;
+      handleFileChange(inputEvent);
+    };
+    
+    fileInput.click();
   };
 
   const togglePart = (part: string) => {
@@ -279,7 +303,17 @@ const EditErrorReport = () => {
                 render={({ field: { value, onChange, ...field } }) => (
                   <FormItem className="space-y-4">
                     <FormLabel>Attachments</FormLabel>
-                    <FormControl>
+                    <div className="space-y-4">
+                      <Button 
+                        type="button" 
+                        onClick={handleUploadClick}
+                        className="flex items-center gap-2"
+                      >
+                        <Upload className="h-4 w-4" />
+                        Upload Photo
+                      </Button>
+                      
+                      {/* Hidden file input for the actual file selection */}
                       <Input
                         type="file"
                         multiple
@@ -288,31 +322,32 @@ const EditErrorReport = () => {
                           handleFileChange(e);
                           onChange(e.target.files);
                         }}
+                        className="hidden"
                         {...field}
                       />
-                    </FormControl>
-                    <div className="grid grid-cols-2 gap-4">
-                      {existingAttachments.map((attachment, index) => (
-                        <div
-                          key={index}
-                          className="space-y-2"
-                        >
-                          <div className="aspect-square bg-gray-100 rounded">
-                            <img
-                              src="/placeholder.svg"
-                              alt={`Attachment ${index + 1}`}
-                              className="w-full h-full object-cover rounded"
-                            />
-                          </div>
-                          <button
-                            type="button"
-                            className="w-full text-red-600 hover:underline text-center"
-                            onClick={() => handleDeleteAttachment(attachment)}
-                          >
-                            Delete
-                          </button>
+                      
+                      {/* Display thumbnail grid */}
+                      {placeholderImages.length > 0 && (
+                        <div className="grid grid-cols-4 gap-4 mt-4">
+                          {placeholderImages.map((img, index) => (
+                            <div key={index} className="space-y-1">
+                              <div className="relative aspect-square bg-gray-100 rounded overflow-hidden">
+                                <img
+                                  src={img}
+                                  alt={`Attachment ${index + 1}`}
+                                  className="w-full h-full object-cover"
+                                />
+                              </div>
+                              <button
+                                type="button"
+                                className="w-full text-red-600 hover:underline text-center text-sm"
+                              >
+                                Delete
+                              </button>
+                            </div>
+                          ))}
                         </div>
-                      ))}
+                      )}
                     </div>
                   </FormItem>
                 )}
@@ -337,3 +372,4 @@ const EditErrorReport = () => {
 };
 
 export default EditErrorReport;
+
