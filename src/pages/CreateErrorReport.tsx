@@ -21,6 +21,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
+import { Upload } from "lucide-react";
 
 interface ErrorReportForm {
   rollId: string;
@@ -49,6 +50,12 @@ const CreateErrorReport = () => {
   const form = useForm<ErrorReportForm>();
   const [files, setFiles] = useState<File[]>([]);
   const [selectedParts, setSelectedParts] = useState<string[]>([]);
+  // Sample placeholder images for demo purposes
+  const [placeholderImages] = useState([
+    "/placeholder.svg",
+    "/placeholder.svg",
+    "/placeholder.svg",
+  ]);
 
   const onSubmit = (data: ErrorReportForm) => {
     const formData = {
@@ -63,6 +70,20 @@ const CreateErrorReport = () => {
     if (e.target.files) {
       setFiles(Array.from(e.target.files));
     }
+  };
+
+  const handleUploadClick = () => {
+    // Create a hidden file input and trigger it
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.multiple = true;
+    fileInput.accept = "image/*";
+    
+    fileInput.onchange = (e) => {
+      handleFileChange(e as React.ChangeEvent<HTMLInputElement>);
+    };
+    
+    fileInput.click();
   };
 
   const togglePart = (part: string) => {
@@ -200,9 +221,19 @@ const CreateErrorReport = () => {
                 control={form.control}
                 name="attachments"
                 render={({ field: { value, onChange, ...field } }) => (
-                  <FormItem>
+                  <FormItem className="space-y-4">
                     <FormLabel>Attachments</FormLabel>
-                    <FormControl>
+                    <div className="space-y-4">
+                      <Button 
+                        type="button" 
+                        onClick={handleUploadClick}
+                        className="flex items-center gap-2"
+                      >
+                        <Upload className="h-4 w-4" />
+                        Upload Photo
+                      </Button>
+                      
+                      {/* Hidden file input for the actual file selection */}
                       <Input
                         type="file"
                         multiple
@@ -211,9 +242,33 @@ const CreateErrorReport = () => {
                           handleFileChange(e);
                           onChange(e.target.files);
                         }}
+                        className="hidden"
                         {...field}
                       />
-                    </FormControl>
+                      
+                      {/* Display thumbnail grid */}
+                      {placeholderImages.length > 0 && (
+                        <div className="grid grid-cols-4 gap-4 mt-4">
+                          {placeholderImages.map((img, index) => (
+                            <div key={index} className="space-y-1">
+                              <div className="relative aspect-square bg-gray-100 rounded overflow-hidden">
+                                <img
+                                  src={img}
+                                  alt={`Attachment ${index + 1}`}
+                                  className="w-full h-full object-cover"
+                                />
+                              </div>
+                              <button
+                                type="button"
+                                className="w-full text-red-600 hover:underline text-center text-sm"
+                              >
+                                Delete
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </FormItem>
                 )}
               />
