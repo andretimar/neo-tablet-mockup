@@ -1,3 +1,4 @@
+
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import Header from "@/components/Header";
@@ -8,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { FileUp, AlertCircle, CheckCircle, History, Link as LinkIcon, Clock, FileText, Settings, File, Wrench, Upload } from "lucide-react";
+import { FileUp, AlertCircle, CheckCircle, History, Link as LinkIcon, Clock, FileText, Settings, File, Wrench, Upload, Play, Pause } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Tooltip,
@@ -22,6 +23,7 @@ const EditItem = () => {
   const navigate = useNavigate();
   const [showReportMenu, setShowReportMenu] = useState(false);
   const [isTopPriority, setIsTopPriority] = useState(false);
+  const [isInProgress, setIsInProgress] = useState(false);
   const [activeTab, setActiveTab] = useState("general");
   const [files, setFiles] = useState<File[]>([]);
   // Sample placeholder images for demo purposes, same as in CreateErrorReport
@@ -233,19 +235,26 @@ const EditItem = () => {
                   handleFileChange(e);
                 }}
               />
-              <Button variant="outline" onClick={() => document.getElementById('file-input')?.click()}>
-                <FileUp className="mr-2 h-4 w-4" />
-                <input
-                  type="file"
-                  id="file-input"
-                  className="hidden"
-                  multiple
-                  accept="image/*"
-                  onChange={(e) => {
-                    console.log(e.target.files);
-                  }}
-                />
-                Attach Files
+              <Button 
+                variant="outline" 
+                className={`${
+                  isInProgress 
+                    ? "bg-blue-100 text-blue-700 border-blue-200" 
+                    : "bg-white text-gray-700 border-gray-300"
+                }`}
+                onClick={() => setIsInProgress(!isInProgress)}
+              >
+                {isInProgress ? (
+                  <>
+                    <Play className="mr-2 h-4 w-4" />
+                    In Progress
+                  </>
+                ) : (
+                  <>
+                    <Pause className="mr-2 h-4 w-4" />
+                    Waiting
+                  </>
+                )}
               </Button>
               <Button variant="outline" className="text-green-600">
                 <CheckCircle className="mr-2 h-4 w-4" />
@@ -318,12 +327,6 @@ const EditItem = () => {
                       <div className="space-y-4">
                         <div>
                           <Label>Problems found</Label>
-                          <div className="mt-2">
-                            <Switch />
-                          </div>
-                        </div>
-                        <div>
-                          <Label>Waiting in line</Label>
                           <div className="mt-2">
                             <Switch />
                           </div>
