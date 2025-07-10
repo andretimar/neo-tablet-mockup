@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { FileUp, AlertCircle, CheckCircle, History, Link as LinkIcon, Clock, FileText, Info, File, Wrench, Upload } from "lucide-react";
+import { FileUp, AlertCircle, CheckCircle, History, Link as LinkIcon, Clock, FileText, Settings, File, Wrench, Upload } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Tooltip,
@@ -266,7 +266,7 @@ const EditItem = () => {
             <div className="space-y-1 border-r border-gray-200 pr-4">
               <TooltipProvider>
                 {[
-                  { name: "General Information", id: "general", icon: Info },
+                  { name: "General Information", id: "general", icon: Settings },
                   { name: "Error Reports", id: "error_reports", icon: AlertCircle },
                   { name: "Information", id: "information", icon: FileText },
                   { name: "History", id: "history", icon: History },
@@ -275,9 +275,9 @@ const EditItem = () => {
                   <Tooltip key={item.id}>
                     <TooltipTrigger asChild>
                       <div
-                        className={`p-3 rounded-lg cursor-pointer flex items-center justify-center ${
+                        className={`p-4 rounded-lg cursor-pointer flex items-center justify-center ${
                           activeTab === item.id 
-                            ? "bg-gray-100 text-gray-900 font-medium" 
+                            ? "bg-blue-600 text-white" 
                             : "text-gray-700 hover:bg-gray-50"
                         }`}
                         onClick={() => setActiveTab(item.id)}
@@ -360,7 +360,7 @@ const EditItem = () => {
                     </div>
                   </div>
 
-                  <div className="mb-8">
+                  <div className="mb-8 mt-6">
                     <Label className="mb-3 block">Attached photos</Label>
                     <div className="grid grid-cols-4 gap-4">
                       {placeholderImages.map((img, index) => (
