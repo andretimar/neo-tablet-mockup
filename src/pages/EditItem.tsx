@@ -216,10 +216,6 @@ const EditItem = () => {
               <div className="text-2xl font-bold text-blue-600">{id}</div>
             </div>
             <div className="space-y-1">
-              <div className="text-sm text-gray-500">Customer</div>
-              <div className="text-xl font-semibold">Samsung</div>
-            </div>
-            <div className="space-y-1">
               <div className="text-sm text-gray-500">Job ID</div>
               <div className="text-xl font-semibold">JB-1001</div>
             </div>
@@ -266,37 +262,130 @@ const EditItem = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-[240px,1fr] gap-6">
+          <div className="grid grid-cols-[80px,1fr] gap-6">
             <div className="space-y-1 border-r border-gray-200 pr-4">
-              {[
-                { name: "General Information", id: "general", icon: Info },
-                { name: "Disassembly", id: "disassembly" },
-                { name: "Grinding", id: "grinding" },
-                { name: "Plating", id: "plating" },
-                { name: "Heat Treat", id: "heattreat" },
-                { name: "Assembly", id: "assembly" },
-                { name: "Error Reports", id: "error_reports", icon: AlertCircle },
-                { name: "Information", id: "information", icon: FileText },
-                { name: "History", id: "history", icon: History },
-                { name: "Logs", id: "logs", icon: File }
-              ].map((item) => (
-                <div
-                  key={item.id}
-                  className={`p-3 rounded-lg cursor-pointer flex items-center ${
-                    activeTab === item.id 
-                      ? "bg-gray-100 text-gray-900 font-medium" 
-                      : "text-gray-700 hover:bg-gray-50"
-                  }`}
-                  onClick={() => setActiveTab(item.id)}
-                >
-                  {item.icon && <item.icon className="mr-2 h-4 w-4" />}
-                  {item.name}
-                </div>
-              ))}
+              <TooltipProvider>
+                {[
+                  { name: "General Information", id: "general", icon: Info },
+                  { name: "Error Reports", id: "error_reports", icon: AlertCircle },
+                  { name: "Information", id: "information", icon: FileText },
+                  { name: "History", id: "history", icon: History },
+                  { name: "Logs", id: "logs", icon: File }
+                ].map((item) => (
+                  <Tooltip key={item.id}>
+                    <TooltipTrigger asChild>
+                      <div
+                        className={`p-3 rounded-lg cursor-pointer flex items-center justify-center ${
+                          activeTab === item.id 
+                            ? "bg-gray-100 text-gray-900 font-medium" 
+                            : "text-gray-700 hover:bg-gray-50"
+                        }`}
+                        onClick={() => setActiveTab(item.id)}
+                      >
+                        <item.icon className="h-4 w-4" />
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent side="right">
+                      <p>{item.name}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                ))}
+              </TooltipProvider>
             </div>
 
             <div className="h-[calc(100vh-280px)] overflow-hidden">
-              {activeTab === "error_reports" ? (
+              {activeTab === "general" ? (
+                <div className="h-full overflow-y-auto pr-4">
+                  <div className="grid grid-cols-2 gap-6">
+                    <div className="space-y-4">
+                      <div>
+                        <Label>Customer</Label>
+                        <Input value="Samsung" readOnly className="bg-gray-100" />
+                      </div>
+
+                      <div>
+                        <Label>Pair ID</Label>
+                        <Select defaultValue="87602">
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select pair ID" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="87602">87602</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div className="space-y-4">
+                        <div>
+                          <Label>Problems found</Label>
+                          <div className="mt-2">
+                            <Switch />
+                          </div>
+                        </div>
+                        <div>
+                          <Label>Waiting in line</Label>
+                          <div className="mt-2">
+                            <Switch />
+                          </div>
+                        </div>
+                        <div>
+                          <Label>Top Priority</Label>
+                          <div className="mt-2">
+                            <Switch
+                              checked={isTopPriority}
+                              onCheckedChange={setIsTopPriority}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      <div>
+                        <Label>Assignee</Label>
+                        <Select defaultValue="operator1">
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select operator" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="operator1">Test Operator #1</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div>
+                        <Label>Due date</Label>
+                        <Input type="date" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mb-8">
+                    <Label className="mb-3 block">Attached photos</Label>
+                    <div className="grid grid-cols-4 gap-4">
+                      {placeholderImages.map((img, index) => (
+                        <div key={index} className="space-y-1">
+                          <div className="relative aspect-square bg-gray-100 rounded overflow-hidden">
+                            <img
+                              src={img}
+                              alt={`Attachment ${index + 1}`}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                          <button
+                            type="button"
+                            className="w-full text-red-600 hover:underline text-center text-sm"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <Button className="w-full bg-green-500 hover:bg-green-600">Save</Button>
+                </div>
+              ) : activeTab === "error_reports" ? (
                 <div className="h-full overflow-y-auto pr-4">
                   <Table>
                     <TableHeader>
