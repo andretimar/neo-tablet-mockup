@@ -1,4 +1,3 @@
-
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import Header from "@/components/Header";
@@ -9,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { FileUp, AlertCircle, CheckCircle, History, Link as LinkIcon, Clock, FileText, Settings, File, Wrench, Upload, Play, Pause } from "lucide-react";
+import { FileUp, AlertCircle, CheckCircle, History, Link as LinkIcon, Clock, FileText, User, File, Wrench, Upload, Play, Pause } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Tooltip,
@@ -32,6 +31,11 @@ const EditItem = () => {
     "/placeholder.svg",
     "/placeholder.svg",
   ]);
+
+  // Generate a random diameter for demonstration - using ID as seed for consistency
+  const finalDiameter = Math.floor((parseInt(id || "0") % 100) + 150);
+  // Mock approval status - in real app this would come from data
+  const hasFullApproval = true; // For demonstration purposes
 
   const quickReports = [
     "Damaged during process",
@@ -275,7 +279,7 @@ const EditItem = () => {
             <div className="space-y-1 border-r border-gray-200 pr-4">
               <TooltipProvider>
                 {[
-                  { name: "General Information", id: "general", icon: Settings },
+                  { name: "General Information", id: "general", icon: User },
                   { name: "Error Reports", id: "error_reports", icon: AlertCircle },
                   { name: "Information", id: "information", icon: FileText },
                   { name: "History", id: "history", icon: History },
@@ -311,6 +315,13 @@ const EditItem = () => {
                         <Label>Customer</Label>
                         <Input value="Samsung" readOnly className="bg-gray-100" />
                       </div>
+
+                      {hasFullApproval && (
+                        <div>
+                          <Label>Final Diameter</Label>
+                          <Input value={`${finalDiameter} mm`} readOnly className="bg-gray-100" />
+                        </div>
+                      )}
 
                       <div>
                         <Label>Pair ID</Label>
@@ -675,12 +686,6 @@ const EditItem = () => {
                       <div className="space-y-4">
                         <div>
                           <Label>Problems found</Label>
-                          <div className="mt-2">
-                            <Switch />
-                          </div>
-                        </div>
-                        <div>
-                          <Label>Waiting in line</Label>
                           <div className="mt-2">
                             <Switch />
                           </div>
