@@ -36,6 +36,9 @@ const ProcessCard = ({
 }: ProcessCardProps) => {
   const navigate = useNavigate();
 
+  // Generate a random diameter for demonstration
+  const finalDiameter = Math.floor(Math.random() * (250 - 150 + 1)) + 150;
+
   const renderApprovalIcon = () => {
     switch (approvalStatus) {
       case "full":
@@ -81,7 +84,12 @@ const ProcessCard = ({
         <div className="absolute bottom-0 left-0 right-0 p-3 bg-white bg-opacity-90">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <span className="text-sm text-gray-600">{assignee?.name || "Unassigned"}</span>
+              <span className="text-sm text-gray-600">
+                {approvalStatus === "full" 
+                  ? `Final Diameter: ${finalDiameter} mm` 
+                  : (assignee?.name || "Unassigned")
+                }
+              </span>
             </div>
             <div className="flex items-center gap-2">
               {isPriority && <Star className="w-5 h-5 text-amber-500" />}

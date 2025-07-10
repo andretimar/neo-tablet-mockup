@@ -55,6 +55,13 @@ const items: Item[] = [
   },
 ];
 
+// Generate random diameters for demonstration
+const generateFinalDiameter = (id: string) => {
+  // Use ID as seed for consistent random number
+  const seed = parseInt(id) || 0;
+  return Math.floor((seed % 100) + 150); // Range 150-249
+};
+
 const HomeListView = () => {
   const [filters, setFilters] = useState({
     rollId: "",
@@ -223,7 +230,10 @@ const HomeListView = () => {
                       </span>
                     </div>
                     <p className="text-sm text-gray-600">
-                      {item.customer} - Assigned to {item.assignee}
+                      {item.customer} - {item.qualityApprovals === 2 
+                        ? `Final Diameter: ${generateFinalDiameter(item.id)} mm`
+                        : `Assigned to ${item.assignee}`
+                      }
                       {item.pair && ` - Pair: ${item.pair}`}
                     </p>
                   </div>
