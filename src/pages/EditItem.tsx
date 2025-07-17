@@ -678,6 +678,16 @@ const EditItem = () => {
                 </div>
               ) : activeTab === "grinding" ? (
                 <div className="h-full overflow-y-auto pr-4 space-y-6">
+                  <div className="space-y-4">
+                    <h3 className="text-xl font-semibold text-gray-900">Instructions</h3>
+                    <div className="p-4 bg-gray-50 rounded-lg text-gray-700">
+                      Follow proper safety protocols when operating grinding equipment. Ensure the workpiece is securely mounted and properly balanced before beginning operations. 
+                      Maintain consistent feed rates and monitor surface temperature to prevent thermal damage to the material. 
+                      Use appropriate coolant flow to dissipate heat and remove debris. Check grinding wheel condition regularly and dress as needed to maintain optimal cutting performance. 
+                      Verify dimensional accuracy throughout the process using precision measuring instruments.
+                    </div>
+                  </div>
+
                   <div className="grid grid-cols-2 gap-6">
                     <div className="space-y-4">
                       {[
