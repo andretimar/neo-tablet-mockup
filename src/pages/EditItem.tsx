@@ -39,10 +39,18 @@ const EditItem = () => {
 
   const quickReports = [
     "Damaged during process",
-    "Missing components",
+    "Missing components", 
     "Wrong specifications",
     "Quality issues",
     "Other"
+  ];
+
+  const processSteps = [
+    { id: "disassembly", name: "Disassembly" },
+    { id: "grinding", name: "Grinding" },
+    { id: "plating", name: "Plating" },
+    { id: "heat_treatment", name: "Heat Treatment" },
+    { id: "assembly", name: "Assembly" }
   ];
 
   const historyData = [
@@ -203,14 +211,15 @@ const EditItem = () => {
       <Header />
       <div className="max-w-6xl mx-auto space-y-4 p-4">
         <div className="grid grid-cols-5 gap-4 mb-6">
-          {["Disassembly", "Grinding", "Plating", "Heat Treatment", "Assembly"].map((step, index) => (
+          {processSteps.map((step, index) => (
             <button
-              key={step}
+              key={step.id}
               className={`p-3 border ${
-                index === 1 ? "bg-blue-600 text-white" : "bg-white"
+                activeTab === step.id ? "bg-blue-600 text-white" : "bg-white hover:bg-gray-50"
               } text-center font-medium rounded-lg text-sm flex items-center justify-center h-12`}
+              onClick={() => setActiveTab(step.id)}
             >
-              {step}
+              {step.name}
             </button>
           ))}
         </div>
@@ -666,6 +675,206 @@ const EditItem = () => {
                   </div>
 
                   <Button className="w-full bg-green-500 hover:bg-green-600">Save Disassembly Information</Button>
+                </div>
+              ) : activeTab === "grinding" ? (
+                <div className="h-full overflow-y-auto pr-4 space-y-6">
+                  <div className="grid grid-cols-2 gap-6">
+                    <div className="space-y-4">
+                      {[
+                        { id: "grinding_speed", label: "Grinding Speed", hint: "Enter grinding speed in RPM" },
+                        { id: "feed_rate", label: "Feed Rate", hint: "Enter feed rate in mm/min" },
+                        { id: "grinding_wheel", label: "Grinding Wheel", hint: "Enter grinding wheel specifications" },
+                        { id: "surface_finish", label: "Surface Finish", hint: "Enter required surface finish (Ra)" },
+                        { id: "coolant_type", label: "Coolant Type", hint: "Specify coolant type used" },
+                        { id: "coolant_flow", label: "Coolant Flow Rate", hint: "Enter coolant flow rate" }
+                      ].map((field) => (
+                        <div key={field.id} className="space-y-1">
+                          <Label htmlFor={field.id} className="block text-sm font-medium text-gray-700">
+                            {field.label}
+                          </Label>
+                          <Input
+                            id={field.id}
+                            className="w-full"
+                            placeholder={`Enter ${field.label.toLowerCase()}`}
+                          />
+                          <p className="text-sm text-gray-500">{field.hint}</p>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="space-y-4">
+                      {[
+                        { id: "diameter_before", label: "Diameter Before", hint: "Measure diameter before grinding" },
+                        { id: "diameter_after", label: "Diameter After", hint: "Measure diameter after grinding" },
+                        { id: "material_removed", label: "Material Removed", hint: "Calculate material removed" },
+                        { id: "grinding_time", label: "Grinding Time", hint: "Total grinding time in hours" },
+                        { id: "operator_grinding", label: "Operator", hint: "Name of grinding operator" },
+                        { id: "quality_check", label: "Quality Check", hint: "Quality check results" }
+                      ].map((field) => (
+                        <div key={field.id} className="space-y-1">
+                          <Label htmlFor={field.id} className="block text-sm font-medium text-gray-700">
+                            {field.label}
+                          </Label>
+                          <Input
+                            id={field.id}
+                            className="w-full"
+                            placeholder={`Enter ${field.label.toLowerCase()}`}
+                          />
+                          <p className="text-sm text-gray-500">{field.hint}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <Button className="w-full bg-green-500 hover:bg-green-600">Save Grinding Information</Button>
+                </div>
+              ) : activeTab === "plating" ? (
+                <div className="h-full overflow-y-auto pr-4 space-y-6">
+                  <div className="grid grid-cols-2 gap-6">
+                    <div className="space-y-4">
+                      {[
+                        { id: "plating_type", label: "Plating Type", hint: "Specify plating material (chrome, nickel, etc.)" },
+                        { id: "thickness_target", label: "Target Thickness", hint: "Enter target plating thickness in mm" },
+                        { id: "current_density", label: "Current Density", hint: "Enter current density in A/dm²" },
+                        { id: "voltage", label: "Voltage", hint: "Enter plating voltage" },
+                        { id: "temperature", label: "Temperature", hint: "Enter bath temperature in °C" },
+                        { id: "ph_level", label: "pH Level", hint: "Enter electrolyte pH level" }
+                      ].map((field) => (
+                        <div key={field.id} className="space-y-1">
+                          <Label htmlFor={field.id} className="block text-sm font-medium text-gray-700">
+                            {field.label}
+                          </Label>
+                          <Input
+                            id={field.id}
+                            className="w-full"
+                            placeholder={`Enter ${field.label.toLowerCase()}`}
+                          />
+                          <p className="text-sm text-gray-500">{field.hint}</p>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="space-y-4">
+                      {[
+                        { id: "bath_composition", label: "Bath Composition", hint: "Enter electrolyte composition" },
+                        { id: "plating_time", label: "Plating Time", hint: "Enter plating duration in hours" },
+                        { id: "thickness_achieved", label: "Actual Thickness", hint: "Measure actual plating thickness" },
+                        { id: "adhesion_test", label: "Adhesion Test", hint: "Enter adhesion test results" },
+                        { id: "surface_quality", label: "Surface Quality", hint: "Assess surface quality" },
+                        { id: "operator_plating", label: "Operator", hint: "Name of plating operator" }
+                      ].map((field) => (
+                        <div key={field.id} className="space-y-1">
+                          <Label htmlFor={field.id} className="block text-sm font-medium text-gray-700">
+                            {field.label}
+                          </Label>
+                          <Input
+                            id={field.id}
+                            className="w-full"
+                            placeholder={`Enter ${field.label.toLowerCase()}`}
+                          />
+                          <p className="text-sm text-gray-500">{field.hint}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <Button className="w-full bg-green-500 hover:bg-green-600">Save Plating Information</Button>
+                </div>
+              ) : activeTab === "heat_treatment" ? (
+                <div className="h-full overflow-y-auto pr-4 space-y-6">
+                  <div className="grid grid-cols-2 gap-6">
+                    <div className="space-y-4">
+                      {[
+                        { id: "treatment_type", label: "Treatment Type", hint: "Specify heat treatment type" },
+                        { id: "target_temperature", label: "Target Temperature", hint: "Enter target temperature in °C" },
+                        { id: "holding_time", label: "Holding Time", hint: "Enter holding time at temperature" },
+                        { id: "cooling_method", label: "Cooling Method", hint: "Specify cooling method" },
+                        { id: "furnace_id", label: "Furnace ID", hint: "Enter furnace identification" },
+                        { id: "atmosphere", label: "Atmosphere", hint: "Specify furnace atmosphere" }
+                      ].map((field) => (
+                        <div key={field.id} className="space-y-1">
+                          <Label htmlFor={field.id} className="block text-sm font-medium text-gray-700">
+                            {field.label}
+                          </Label>
+                          <Input
+                            id={field.id}
+                            className="w-full"
+                            placeholder={`Enter ${field.label.toLowerCase()}`}
+                          />
+                          <p className="text-sm text-gray-500">{field.hint}</p>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="space-y-4">
+                      {[
+                        { id: "actual_temperature", label: "Actual Temperature", hint: "Record actual temperature reached" },
+                        { id: "heating_rate", label: "Heating Rate", hint: "Enter heating rate in °C/min" },
+                        { id: "cooling_rate", label: "Cooling Rate", hint: "Enter cooling rate in °C/min" },
+                        { id: "hardness_before", label: "Hardness Before", hint: "Measure hardness before treatment" },
+                        { id: "hardness_after", label: "Hardness After", hint: "Measure hardness after treatment" },
+                        { id: "operator_heat", label: "Operator", hint: "Name of heat treatment operator" }
+                      ].map((field) => (
+                        <div key={field.id} className="space-y-1">
+                          <Label htmlFor={field.id} className="block text-sm font-medium text-gray-700">
+                            {field.label}
+                          </Label>
+                          <Input
+                            id={field.id}
+                            className="w-full"
+                            placeholder={`Enter ${field.label.toLowerCase()}`}
+                          />
+                          <p className="text-sm text-gray-500">{field.hint}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <Button className="w-full bg-green-500 hover:bg-green-600">Save Heat Treatment Information</Button>
+                </div>
+              ) : activeTab === "assembly" ? (
+                <div className="h-full overflow-y-auto pr-4 space-y-6">
+                  <div className="grid grid-cols-2 gap-6">
+                    <div className="space-y-4">
+                      {[
+                        { id: "bearing_type", label: "Bearing Type", hint: "Specify bearing type and model" },
+                        { id: "bearing_clearance", label: "Bearing Clearance", hint: "Enter bearing clearance in mm" },
+                        { id: "seal_type", label: "Seal Type", hint: "Specify seal type and material" },
+                        { id: "lubricant", label: "Lubricant", hint: "Enter lubricant type and grade" },
+                        { id: "torque_spec", label: "Torque Specification", hint: "Enter required torque in Nm" },
+                        { id: "assembly_sequence", label: "Assembly Sequence", hint: "Document assembly sequence" }
+                      ].map((field) => (
+                        <div key={field.id} className="space-y-1">
+                          <Label htmlFor={field.id} className="block text-sm font-medium text-gray-700">
+                            {field.label}
+                          </Label>
+                          <Input
+                            id={field.id}
+                            className="w-full"
+                            placeholder={`Enter ${field.label.toLowerCase()}`}
+                          />
+                          <p className="text-sm text-gray-500">{field.hint}</p>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="space-y-4">
+                      {[
+                        { id: "runout_measurement", label: "Runout Measurement", hint: "Measure runout in mm" },
+                        { id: "balance_check", label: "Balance Check", hint: "Record balance check results" },
+                        { id: "final_inspection", label: "Final Inspection", hint: "Complete final inspection checklist" },
+                        { id: "test_run", label: "Test Run", hint: "Document test run results" },
+                        { id: "operator_assembly", label: "Operator", hint: "Name of assembly operator" },
+                        { id: "assembly_date", label: "Assembly Date", hint: "Date of assembly completion" }
+                      ].map((field) => (
+                        <div key={field.id} className="space-y-1">
+                          <Label htmlFor={field.id} className="block text-sm font-medium text-gray-700">
+                            {field.label}
+                          </Label>
+                          <Input
+                            id={field.id}
+                            className="w-full"
+                            placeholder={`Enter ${field.label.toLowerCase()}`}
+                          />
+                          <p className="text-sm text-gray-500">{field.hint}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <Button className="w-full bg-green-500 hover:bg-green-600">Save Assembly Information</Button>
                 </div>
               ) : (
                 <div className="h-full overflow-y-auto pr-4">
